@@ -25,7 +25,7 @@ namespace JourneyHub
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
             builder.Services.AddAuthentication(configureOptions:options =>

@@ -6,7 +6,7 @@ namespace JourneyHub.Data
 {
     public class AppDbContext : IdentityDbContext
     {
-        public DbSet<Trip> Trips { get; set; }
+        public DbSet<Trip>? Trips { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     }
 }
