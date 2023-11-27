@@ -73,24 +73,24 @@
     </div>
 
     <div class="flex flex-col gap-2 w-full">
-      <label for="repeat-password">Repeat password</label>
+      <label for="confirm-password">Repeat password</label>
       <input
-        formControlName="repeatPassword"
-        id="repeat-password"
+        formControlName="confirmPassword"
+        id="confirm-password"
         type="password"
         class="border-light-600 border-2 p-3 rounded-md outline-none focus:border-dark-900"
       />
       <div
         *ngIf="
-          repeatPassword?.invalid &&
-          (repeatPassword?.dirty || repeatPassword?.touched)
+          confirmPassword?.invalid &&
+          (confirmPassword?.dirty || confirmPassword?.touched)
         "
         class="text-red-700"
       >
-        <div *ngIf="repeatPassword?.errors?.['required']">
+        <div *ngIf="confirmPassword?.errors?.['required']">
           Repeating the password is required.
         </div>
-        <div *ngIf="repeatPassword?.errors?.['mustMatch']">
+        <div *ngIf="confirmPassword?.errors?.['mustMatch']">
           Passwords must match.
         </div>
       </div>
