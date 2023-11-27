@@ -5,6 +5,7 @@ using JourneyHub.Common.Exceptions;
 using JourneyHub.Common.Models.Dtos.Responses;
 using Newtonsoft.Json;
 using System.Text;
+using AutoMapper;
 
 namespace JourneyHub.Common.Middleware
 {
@@ -24,9 +25,13 @@ namespace JourneyHub.Common.Middleware
                         statusCode = (int)HttpStatusCode.BadRequest;
                         message = badRequestException.Message;
                         break;
+                    case AutoMapperMappingException autoMapperMappingException:
+                        statusCode = (int)HttpStatusCode.UnprocessableEntity;
+                        message = autoMapperMappingException.Message;
+                        break;
                     default:
                         statusCode = (int)HttpStatusCode.InternalServerError;
-                        message = "An unexpected error has occurred.";
+                        message = exception.Message;
                         break;
                 }
 
@@ -34,7 +39,7 @@ namespace JourneyHub.Common.Middleware
                 context.Response.ContentType = "application/json";
 
                 var errorResponse = new ErrorResponseDto(statusCode, message);
-                var response = new GenericResponseDto.GenericResponse<object>(errorResponse);
+                var response = new GenericResponse<object>(errorResponse);
 
                 var jsonResponse = JsonConvert.SerializeObject(response);
                 await context.Response.WriteAsync(jsonResponse, Encoding.UTF8);

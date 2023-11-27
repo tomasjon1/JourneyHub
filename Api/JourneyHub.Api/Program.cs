@@ -1,3 +1,5 @@
+using JourneyHub.Api.Services.Interfaces;
+using JourneyHub.Api.Services;
 using JourneyHub.Common.Middleware;
 using JourneyHub.Common.Options;
 using JourneyHub.Data;
@@ -47,6 +49,10 @@ namespace JourneyHub
                 };
             });
 
+            builder.Services.AddScoped<ITripServices, TripServices>();
+
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<AppDbContext>();
 
@@ -60,6 +66,11 @@ namespace JourneyHub
             }
 
             app.UseExceptionHandler(c => c.Run(ExceptionHandlerMiddleware.InvokeAsync));
+
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
