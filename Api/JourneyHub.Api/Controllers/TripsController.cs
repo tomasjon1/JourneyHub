@@ -23,5 +23,13 @@ namespace JourneyHub.Api.Controllers
             Trip trip = await _tripService.CreateTripAsync(tripDto);
             return Ok(new GenericResponse<Trip>(trip));
         }
+
+        [HttpPost]
+        [Route("Area")]
+        public async Task<IActionResult> GetAreByCoordinates([FromBody] getAreaByCoordsDto areaDto)
+        {
+            String area = await _tripService.getAreaByCoordinates(areaDto);
+            return Ok(area);
+        }
     }
 }
