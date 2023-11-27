@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj": {}
+    "C:\\Projects\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj": {
+    "C:\\Projects\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
+        "projectUniqueName": "C:\\Projects\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
         "projectName": "JourneyHub.Common",
-        "projectPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
-        "packagesPath": "C:\\Users\\Tomas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\obj\\",
+        "projectPath": "C:\\Projects\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
+        "packagesPath": "C:\\Users\\benas\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\JourneyHub\\Api\\JourneyHub.Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\benas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
