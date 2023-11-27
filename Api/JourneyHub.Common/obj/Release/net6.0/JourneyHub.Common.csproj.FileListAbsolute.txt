@@ -1,0 +1,12 @@
+C:\Projects\JourneyHub\Api\JourneyHub.Common\bin\Release\net6.0\JourneyHub.Common.deps.json
+C:\Projects\JourneyHub\Api\JourneyHub.Common\bin\Release\net6.0\JourneyHub.Common.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Common\bin\Release\net6.0\JourneyHub.Common.pdb
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.csproj.AssemblyReference.cache
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.AssemblyInfoInputs.cache
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.AssemblyInfo.cs
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.csproj.CoreCompileInputs.cache
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\refint\JourneyHub.Common.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\JourneyHub.Common.pdb
+C:\Projects\JourneyHub\Api\JourneyHub.Common\obj\Release\net6.0\ref\JourneyHub.Common.dll

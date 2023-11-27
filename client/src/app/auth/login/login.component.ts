@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
 
 @Component({
   standalone: true,
@@ -21,8 +20,7 @@ export class LoginComponent {
   signInForm: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private meta: Meta,
-    private authService: AuthService
+    private meta: Meta
     ) {
     this.meta.addTag({
       name: 'Sign In',
@@ -61,13 +59,6 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.signInForm.value).subscribe({
-      next: (response: any) => {
-        console.log('Login successful', response);
-      },
-      error: (error: any) => {
-        console.error('Login failed', error);
-      },
-    })
+    console.warn(this.signInForm.value);
   }
 }

@@ -1,0 +1,8 @@
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\JourneyHub.Common.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\JourneyHub.Common.deps.json
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\JourneyHub.Common.pdb
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\Microsoft.AspNetCore.Diagnostics.Abstractions.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\Microsoft.AspNetCore.Http.Abstractions.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\Microsoft.AspNetCore.Http.Features.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\Microsoft.Extensions.Primitives.dll
+C:\Projects\JourneyHub\Api\JourneyHub.Api\out\Newtonsoft.Json.dll
