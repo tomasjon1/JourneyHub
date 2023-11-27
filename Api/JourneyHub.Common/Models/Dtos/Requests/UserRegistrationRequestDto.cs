@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JourneyHub.Common.Models.Dtos.Responses
+namespace JourneyHub.Common.Models.Dtos.Requests
 {
     public class UserRegistrationRequestDto
     {
         [Required]
-        public string Username { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [EmailAddress]

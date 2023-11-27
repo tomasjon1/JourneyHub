@@ -8,12 +8,24 @@
     ".NETCoreApp,Version=v6.0": {
       "JourneyHub.Common/1.0.0": {
         "dependencies": {
+          "AutoMapper": "12.0.1",
           "Microsoft.AspNetCore.Diagnostics.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "JourneyHub.Common.dll": {}
+        }
+      },
+      "AutoMapper/12.0.1": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.1.0"
+          }
         }
       },
       "Microsoft.AspNetCore.Diagnostics.Abstractions/2.2.0": {
@@ -47,6 +59,7 @@
           }
         }
       },
+      "Microsoft.CSharp/4.7.0": {},
       "Microsoft.Extensions.Primitives/2.2.0": {
         "dependencies": {
           "System.Memory": "4.5.1",
@@ -78,6 +91,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "AutoMapper/12.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hvV62vl6Hp/WfQ24yzo3Co9+OPl8wH8hApwVtgWpiAynVJkUcs7xvehnSftawL8Pe8FrPffBRM3hwzLQqWDNjA==",
+      "path": "automapper/12.0.1",
+      "hashPath": "automapper.12.0.1.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Diagnostics.Abstractions/2.2.0": {
       "type": "package",
       "serviceable": true,
@@ -98,6 +118,13 @@
       "sha512": "sha512-ziFz5zH8f33En4dX81LW84I6XrYXKf9jg6aM39cM+LffN9KJahViKZ61dGMSO2gd3e+qe5yBRwsesvyqlZaSMg==",
       "path": "microsoft.aspnetcore.http.features/2.2.0",
       "hashPath": "microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Primitives/2.2.0": {
       "type": "package",
