@@ -1,5 +1,6 @@
 ﻿using JourneyHub.Common.Constants;
 using JourneyHub.Common.Exceptions;
+using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Common.Models.Dtos.Responses;
 using JourneyHub.Common.Options;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace JourneyHub.Controllers.Auth
+namespace JourneyHub.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -41,7 +42,7 @@ namespace JourneyHub.Controllers.Auth
                 throw new BadRequestException(ErrorMessages.Invalid_Password);
 
             var token = GenerateJwtToken(existingUser);
-            return Ok(new { Token = token });
+            return Ok(new GenericResponse<string>(token));
         }
 
         [HttpPost]
@@ -51,7 +52,7 @@ namespace JourneyHub.Controllers.Auth
             if (!ModelState.IsValid)
                 throw new BadRequestException(ErrorMessages.Invalid_Payload);
 
-            var userExistsByUsername = await _userManager.FindByNameAsync(requestDto.Username);
+            var userExistsByUsername = await _userManager.FindByNameAsync(requestDto.Name);
             if (userExistsByUsername != null)
                 throw new BadRequestException(ErrorMessages.Username_Taken);
 
@@ -64,7 +65,7 @@ namespace JourneyHub.Controllers.Auth
 
             var newUser = new IdentityUser
             {
-                UserName = requestDto.Username,
+                UserName = requestDto.Name,
                 Email = requestDto.Email
             };
 
@@ -74,7 +75,7 @@ namespace JourneyHub.Controllers.Auth
                 throw new BadRequestException(string.Join("; ", isCreated.Errors.Select(e => e.Description)));
 
             var token = GenerateJwtToken(newUser);
-            return Ok(new { Token = token });
+            return Ok(new GenericResponse<string>(token));
         }
 
         private string GenerateJwtToken(IdentityUser user)
@@ -92,7 +93,7 @@ namespace JourneyHub.Controllers.Auth
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(_jwtConfig.ExpirationInHours),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
