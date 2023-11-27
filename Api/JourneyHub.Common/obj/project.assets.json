@@ -281,11 +281,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
+      "projectUniqueName": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
       "projectName": "JourneyHub.Common",
-      "projectPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
+      "projectPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
       "packagesPath": "C:\\Users\\Tomas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\obj\\",
+      "outputPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XVcO4ExqkixrD90EtAEQIrGsvI8QAgWgXm1Zfw5cbi4yBUY9gr8OHps7urcD9uJSOL/gf42sh/vqEHKtYjwo8g==",
+  "dgSpecHash": "YHCWOAH0i4eX6FV5ac33SsgCZoqFTaOvLcONoTEZNqX64LrJen/5puHj7EYvl9NGmFA/+mLCVXPdXfZLwSI/3A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Api\\JourneyHub.Api.csproj",
+  "projectFilePath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Api\\JourneyHub.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tomas\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Tomas\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.25\\microsoft.aspnetcore.authentication.jwtbearer.6.0.25.nupkg.sha512",

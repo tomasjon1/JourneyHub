@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UtrVOIEIqGgwh8QmFaANDOzwdB0KV+sh9vn6rKDyrez1cdymHWGJg7MUDz2Tw9Q1BFdGIyCcRkzT0ToM5pYwdg==",
+  "dgSpecHash": "wbSDLvVp3p6titwgk04tjEIqhS4vMOD+SbC1rAwGQ4mdALFemxZI6sMF1SwPCrEKuggnkrAxljmZIai+hdxIug==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
+  "projectFilePath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tomas\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.abstractions\\2.2.0\\microsoft.aspnetcore.diagnostics.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Tomas\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",

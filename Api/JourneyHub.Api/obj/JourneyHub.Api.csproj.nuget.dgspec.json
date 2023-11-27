@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Api\\JourneyHub.Api.csproj": {}
+    "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Api\\JourneyHub.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Api\\JourneyHub.Api.csproj": {
+    "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Api\\JourneyHub.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Api\\JourneyHub.Api.csproj",
+        "projectUniqueName": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Api\\JourneyHub.Api.csproj",
         "projectName": "JourneyHub.Api",
-        "projectPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Api\\JourneyHub.Api.csproj",
+        "projectPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Api\\JourneyHub.Api.csproj",
         "packagesPath": "C:\\Users\\Tomas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Api\\obj\\",
+        "outputPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj": {
-                "projectPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj"
+              "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj": {
+                "projectPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj"
               }
             }
           }
@@ -94,14 +94,14 @@
         }
       }
     },
-    "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj": {
+    "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
+        "projectUniqueName": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
         "projectName": "JourneyHub.Common",
-        "projectPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\JourneyHub.Common.csproj",
+        "projectPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\JourneyHub.Common.csproj",
         "packagesPath": "C:\\Users\\Tomas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tomas\\source\\repos\\JourneyHub.Common\\obj\\",
+        "outputPath": "C:\\Users\\Tomas\\Desktop\\UNIVERAS\\PV\\JourneyHub\\Api\\JourneyHub.Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
