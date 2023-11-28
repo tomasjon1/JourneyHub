@@ -28,17 +28,17 @@ namespace JourneyHub.Api.Services
         public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto)
         {
             Trip trip = _mapper.Map<Trip>(tripDto);
-
+            trip.Area = getAreaByCoordinates(tripDto.MapPoints[0]).Result;
             _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
 
             return trip;
         }
 
-        public async Task<string> getAreaByCoordinates(getAreaByCoordsDto areadto)
+        public async Task<string> getAreaByCoordinates(MapPoint MapPoint)
         {
-            string lon = areadto.lon.ToString();
-            string lat = areadto.lat.ToString();
+            string lon = MapPoint.Longitude.ToString();
+            string lat = MapPoint.Latitude.ToString();
 
             string _address = "https://nominatim.openstreetmap.org/reverse?lat="+ lat + "&lon="+ lon + "&format=json";
 
