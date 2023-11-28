@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import {
   FormBuilder,
@@ -8,8 +8,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   standalone: true,
@@ -19,17 +20,20 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent {
   signInForm: FormGroup;
-  constructor(
-    private formBuilder: FormBuilder,
-    private meta: Meta,
-    private authService: AuthService
-    ) {
-    this.meta.addTag({
-      name: 'Sign In',
-      content: 'JournayHub Sign in page'
-    })
 
-    this.signInForm = this.formBuilder.group({
+  private _toastrService = inject(ToastrService);
+  private _formBuilder = inject(FormBuilder);
+  private _meta = inject(Meta);
+  private _authService = inject(AuthService);
+  private _router = inject(Router);
+
+  constructor() {
+    this._meta.addTag({
+      name: 'Sign In',
+      content: 'JournayHub Sign in page',
+    });
+
+    this.signInForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: [
         '',
@@ -61,13 +65,13 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.signInForm.value).subscribe({
+    this._authService.login(this.signInForm.value).subscribe({
       next: (response: any) => {
-        console.log('Login successful', response);
+        this._router.navigate(['/explore']);
       },
       error: (error: any) => {
-        console.error('Login failed', error);
+        this._toastrService.error('', error.error.Error.Message);
       },
-    })
+    });
   }
 }

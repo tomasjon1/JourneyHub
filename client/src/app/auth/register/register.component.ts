@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import {
   FormBuilder,
@@ -8,8 +8,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterModule,
+} from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   standalone: true,
@@ -20,19 +26,21 @@ import { AuthService } from '../auth.service';
 export class RegisterComponent {
   signUpForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private meta: Meta,
-    private authService: AuthService
-    ) {
-    this.meta.addTag({
-      name: "Sign Up",
-      content : "JourneyHub Sign Up page"
-    })
-    this.signUpForm = this.formBuilder.group(
+  private _toastrService = inject(ToastrService);
+  private _formBuilder = inject(FormBuilder);
+  private _meta = inject(Meta);
+  private _authService = inject(AuthService);
+  private _router = inject(Router);
+
+  constructor() {
+    this._meta.addTag({
+      name: 'Sign Up',
+      content: 'JourneyHub Sign Up page',
+    });
+    this.signUpForm = this._formBuilder.group(
       {
-        username: [
-          '',
+        name: [
+          'string',
           [
             Validators.required,
             Validators.minLength(4),
@@ -40,9 +48,9 @@ export class RegisterComponent {
             Validators.pattern('^[a-zA-Z0-9]*$'),
           ],
         ],
-        email: ['', [Validators.required, Validators.email]],
+        email: ['sadfdsa@sdf.fds', [Validators.required, Validators.email]],
         password: [
-          '',
+          't0qcin21@1A',
           [
             Validators.required,
             Validators.minLength(8),
@@ -51,7 +59,7 @@ export class RegisterComponent {
             ),
           ],
         ],
-        confirmPassword: ['', Validators.required],
+        confirmPassword: ['t0qcin21@1A', Validators.required],
       },
       {
         validator: this.mustMatch('password', 'confirmPassword'),
@@ -59,8 +67,8 @@ export class RegisterComponent {
     );
   }
 
-  get username() {
-    return this.signUpForm.get('username');
+  get name() {
+    return this.signUpForm.get('name');
   }
 
   get email() {
@@ -103,15 +111,14 @@ export class RegisterComponent {
       });
       return;
     }
-    
-    console.log(this.signUpForm.value)
 
-    this.authService.register(this.signUpForm.value).subscribe({
+    this._authService.register(this.signUpForm.value).subscribe({
       next: (response: any) => {
-        console.log('Registration successful', response);
+        this._toastrService.success('', 'Account created successfully'),
+          this._router.navigate(['/explore']);
       },
       error: (error: any) => {
-        console.error('Registration failed', error);
+        this._toastrService.error('', error.error.Error.Message);
       },
     });
   }
