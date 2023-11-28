@@ -31,6 +31,13 @@ export class RegisterComponent {
 
   registerValidationMessages = validationMessages.auth.register;
 
+  defaultState = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+
   private _toastrService = inject(ToastrService);
   private _formBuilder = inject(FormBuilder);
   private _meta = inject(Meta);
@@ -45,7 +52,7 @@ export class RegisterComponent {
     this.signUpForm = this._formBuilder.group(
       {
         name: [
-          'string',
+          this.defaultState.username,
           [
             Validators.required,
             Validators.minLength(4),
@@ -53,9 +60,13 @@ export class RegisterComponent {
             Validators.pattern('^[a-zA-Z0-9]*$'),
           ],
         ],
-        email: ['sadfdsa@sdf.fds', [Validators.required, Validators.email]],
+        email: [
+          this.defaultState.email,
+          [Validators.required, Validators.email],
+        ],
         password: [
-          't0qcin21@1A',
+          this.defaultState.password,
+
           [
             Validators.required,
             Validators.minLength(8),
@@ -64,7 +75,10 @@ export class RegisterComponent {
             ),
           ],
         ],
-        confirmPassword: ['t0qcin21@1A', Validators.required],
+        confirmPassword: [
+          this.defaultState.confirmPassword,
+          Validators.required,
+        ],
       },
       {
         validator: this.mustMatch('password', 'confirmPassword'),
