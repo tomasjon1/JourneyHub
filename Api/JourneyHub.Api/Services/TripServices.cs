@@ -4,10 +4,13 @@ using JourneyHub.Common.Models.Domain;
 using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Data;
 using System;
+using System.Diagnostics.Metrics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace JourneyHub.Api.Services
 {
@@ -47,14 +50,29 @@ namespace JourneyHub.Api.Services
             client.DefaultRequestHeaders.UserAgent.Add(productValue);
             client.DefaultRequestHeaders.UserAgent.Add(commentValue);
 
-
             client.BaseAddress = new Uri(_address);
             HttpResponseMessage response = await client.GetAsync(new Uri(_address));
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsStringAsync();
 
+            string patterncountry = @"""\bcountry""\:""(\w+)\b""";
 
-            return result;
+            Match match = Regex.Match(result, patterncountry);
+            string countryName = String.Empty;
+            if (match.Success)
+            {
+                 countryName = match.Value;
+            }
+            string patterncity = @"""\bcity""\:""(\w+)\b""";
+
+            Match matchcity = Regex.Match(result, patterncity);
+            string cityName = String.Empty;
+            if (matchcity.Success)
+            {
+                cityName = matchcity.Value;
+            }
+
+            return countryName +" "+ cityName;
         }
     }
 }
