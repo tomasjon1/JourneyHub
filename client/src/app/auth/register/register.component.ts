@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   standalone: true,
@@ -21,7 +22,8 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private meta: Meta
+    private meta: Meta,
+    private authService: AuthService
     ) {
     this.meta.addTag({
       name: "Sign Up",
@@ -49,10 +51,10 @@ export class RegisterComponent {
             ),
           ],
         ],
-        repeatPassword: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
       },
       {
-        validator: this.mustMatch('password', 'repeatPassword'),
+        validator: this.mustMatch('password', 'confirmPassword'),
       }
     );
   }
@@ -69,8 +71,8 @@ export class RegisterComponent {
     return this.signUpForm.get('password');
   }
 
-  get repeatPassword() {
-    return this.signUpForm.get('repeatPassword');
+  get confirmPassword() {
+    return this.signUpForm.get('confirmPassword');
   }
 
   mustMatch(password: string, confirmPassword: string) {
@@ -101,7 +103,16 @@ export class RegisterComponent {
       });
       return;
     }
+    
+    console.log(this.signUpForm.value)
 
-    console.warn(this.signUpForm.value);
+    this.authService.register(this.signUpForm.value).subscribe({
+      next: (response: any) => {
+        console.log('Registration successful', response);
+      },
+      error: (error: any) => {
+        console.error('Registration failed', error);
+      },
+    });
   }
 }
