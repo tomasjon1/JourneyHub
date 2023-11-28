@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe((title) => {
         if (title) {
-          this._title.setTitle(`App Prefix - ${title}`);
+          this._title.setTitle(title);
         }
       });
   }

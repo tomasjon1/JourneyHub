@@ -53,18 +53,6 @@ export class LoginComponent {
     });
   }
 
-  get authFormControl() {
-    return this.signInForm.controls;
-  }
-
-  get email() {
-    return this.signInForm.get('email');
-  }
-
-  get password() {
-    return this.signInForm.get('password');
-  }
-
   onSubmit() {
     if (this.signInForm.invalid) {
       Object.keys(this.signInForm.controls).forEach((field) => {

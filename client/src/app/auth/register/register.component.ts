@@ -86,22 +86,6 @@ export class RegisterComponent {
     );
   }
 
-  get name() {
-    return this.signUpForm.get('name');
-  }
-
-  get email() {
-    return this.signUpForm.get('email');
-  }
-
-  get password() {
-    return this.signUpForm.get('password');
-  }
-
-  get confirmPassword() {
-    return this.signUpForm.get('confirmPassword');
-  }
-
   mustMatch(password: string, confirmPassword: string) {
     return (formGroup: FormGroup) => {
       const passwordControl = formGroup.controls[password];

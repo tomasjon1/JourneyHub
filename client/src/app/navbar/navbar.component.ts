@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent implements OnInit, OnDestroy {
   private userSub!: Subscription;
   public isAuthentificated: boolean = false;
+  public showDialog: boolean = false;
 
   private _authService = inject(AuthService);
   private _router = inject(Router);
@@ -36,8 +37,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   onLogout() {
     this._authService.logout();
   }
-
-  showDialog: boolean = false;
 
   onClick() {
     this.showDialog = !this.showDialog;
