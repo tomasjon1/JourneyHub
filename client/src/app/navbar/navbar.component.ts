@@ -5,7 +5,7 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public showDialog: boolean = false;
 
   private _authService = inject(AuthService);
-  private _router = inject(Router);
 
   ngOnInit(): void {
     this.userSub = this._authService.user.subscribe((user) => {
@@ -48,6 +47,5 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onLogOut() {
     this._authService.logout();
-    this._router.navigate(['/explore']);
   }
 }
