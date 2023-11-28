@@ -15,6 +15,7 @@ bootstrapApplication(AppComponent, {
       timeOut: 2500,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
+      maxOpened: 3,
     }),
   ],
 });
