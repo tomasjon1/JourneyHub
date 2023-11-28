@@ -5,8 +5,12 @@ import { ExploreComponent } from './explore/explore.component';
 import { PlannerComponent } from './planner/planner.component';
 
 export const APP_ROUTES: Routes = [
-  {path: "signup", component: RegisterComponent},
-  {path: "signin", component: LoginComponent},
-  {path: "explore", component: ExploreComponent},
-  {path: "trail-planner", component: PlannerComponent}
+  { path: 'signup', component: RegisterComponent, title: 'Sign Up' },
+  { path: 'signin', component: LoginComponent, title: 'Sign In' },
+  { path: 'explore', component: ExploreComponent, title: 'Explore' },
+  {
+    path: 'trail-planner',
+    component: PlannerComponent,
+    title: 'Plan a trail',
+  },
 ];
