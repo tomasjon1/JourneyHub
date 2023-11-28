@@ -1,16 +1,71 @@
 <nav class="flex w-full justify-between items-center mb-6">
   <ul class="flex gap-6 font-semibold">
-    <li routerLink="/explore" class="cursor-pointer hover:opacity-60 transition">Find a trail</li>
-    <li routerLink="/trail-planner" class="cursor-pointer hover:opacity-60 transition">Plan a trail</li>
+    <li
+      routerLink="/explore"
+      class="cursor-pointer hover:opacity-60 transition"
+    >
+      Find a trail
+    </li>
+    <li
+      routerLink="/trail-planner"
+      class="cursor-pointer hover:opacity-60 transition"
+    >
+      Plan a trail
+    </li>
   </ul>
   <div class="flex gap-2 items-center">
     <img class="w-6" src="../../assets/jh-logo.svg" alt="JourneyHub logo" />
     <span class="font-semibold">JourneyHub</span>
   </div>
-  <div class="flex gap-2 font-semibold">
-    <button routerLink="/signin" class="px-6 py-2 rounded-md hover:opacity-60 transition">
+  <div class="flex gap-2 font-semibold" *ngIf="!isAuthentificated">
+    <button
+      routerLink="/signin"
+      class="px-6 py-2 rounded-md hover:opacity-60 transition"
+    >
       Sign in
     </button>
-    <button routerLink="/signup" class="bg-dark-900 text-white hover:bg-opacity-80 transition px-6 py-2 rounded-md">Sign up</button>
+    <button
+      routerLink="/signup"
+      class="bg-dark-900 text-white hover:bg-opacity-80 transition px-6 py-2 rounded-md"
+    >
+      Sign up
+    </button>
+  </div>
+
+  <div class="flex gap-5 font-semibold" *ngIf="isAuthentificated">
+    <button
+      routerLink="/"
+      class="bg-dark-900 text-white hover:bg-opacity-80 transition px-6 py-2 rounded-md"
+    >
+      My trails
+    </button>
+    <div
+      class="cursor-pointer w-10 p-2 rounded-full border-2 border-dark-900"
+      (click)="onClick()"
+      (click)="$event.stopPropagation()"
+    >
+      <img class="w-8" src="../../assets/jh-logo.svg" alt="JourneyHub logo" />
+    </div>
+
+    <div
+      class="absolute top-20 right-5 bg-white py-5 rounded-md shadow-lg font-medium"
+      id="hover-content"
+      *ngIf="showDialog"
+    >
+      <ul class="flex flex-col">
+        <li
+          class="flex items-center px-5 py-3 gap-4 hover:bg-light-400 w-full cursor-pointer"
+          routerLink="/profile"
+        >
+          <i class="fa-solid fa-user"></i>Profile
+        </li>
+        <li
+          (click)="onLogout()"
+          class="flex items-center px-5 py-3 gap-4 hover:bg-light-400 w-full cursor-pointer"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>Sign out
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
