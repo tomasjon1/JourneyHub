@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import {
   FormBuilder,
@@ -8,31 +8,51 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { InputComponent } from 'src/app/input/input.component';
+import { validationMessages } from 'src/app/shared/content/validation-messages';
 
 @Component({
   standalone: true,
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
+    InputComponent,
+  ],
 })
 export class RegisterComponent {
   signUpForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private meta: Meta,
-    private authService: AuthService
-    ) {
-    this.meta.addTag({
-      name: "Sign Up",
-      content : "JourneyHub Sign Up page"
-    })
-    this.signUpForm = this.formBuilder.group(
+  registerValidationMessages = validationMessages.auth.register;
+
+  defaultState = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+
+  private _toastrService = inject(ToastrService);
+  private _formBuilder = inject(FormBuilder);
+  private _meta = inject(Meta);
+  private _authService = inject(AuthService);
+  private _router = inject(Router);
+
+  constructor() {
+    this._meta.addTag({
+      name: 'Sign Up',
+      content: 'JourneyHub Sign Up page',
+    });
+    this.signUpForm = this._formBuilder.group(
       {
-        username: [
-          '',
+        name: [
+          this.defaultState.username,
           [
             Validators.required,
             Validators.minLength(4),
@@ -40,9 +60,13 @@ export class RegisterComponent {
             Validators.pattern('^[a-zA-Z0-9]*$'),
           ],
         ],
-        email: ['', [Validators.required, Validators.email]],
+        email: [
+          this.defaultState.email,
+          [Validators.required, Validators.email],
+        ],
         password: [
-          '',
+          this.defaultState.password,
+
           [
             Validators.required,
             Validators.minLength(8),
@@ -51,28 +75,15 @@ export class RegisterComponent {
             ),
           ],
         ],
-        confirmPassword: ['', Validators.required],
+        confirmPassword: [
+          this.defaultState.confirmPassword,
+          Validators.required,
+        ],
       },
       {
         validator: this.mustMatch('password', 'confirmPassword'),
       }
     );
-  }
-
-  get username() {
-    return this.signUpForm.get('username');
-  }
-
-  get email() {
-    return this.signUpForm.get('email');
-  }
-
-  get password() {
-    return this.signUpForm.get('password');
-  }
-
-  get confirmPassword() {
-    return this.signUpForm.get('confirmPassword');
   }
 
   mustMatch(password: string, confirmPassword: string) {
@@ -103,15 +114,14 @@ export class RegisterComponent {
       });
       return;
     }
-    
-    console.log(this.signUpForm.value)
 
-    this.authService.register(this.signUpForm.value).subscribe({
+    this._authService.register(this.signUpForm.value).subscribe({
       next: (response: any) => {
-        console.log('Registration successful', response);
+        this._toastrService.success('', 'Account created successfully'),
+          this._router.navigate(['/explore']);
       },
       error: (error: any) => {
-        console.error('Registration failed', error);
+        this._toastrService.error('', error.error.Error.Message);
       },
     });
   }

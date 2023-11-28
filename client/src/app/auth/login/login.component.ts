@@ -1,55 +1,56 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import {
-  FormBuilder,
   FormGroup,
   FormsModule,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { InputComponent } from 'src/app/input/input.component';
+import { validationMessages } from 'src/app/shared/content/validation-messages';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
+    InputComponent,
+  ],
 })
 export class LoginComponent {
   signInForm: FormGroup;
-  constructor(
-    private formBuilder: FormBuilder,
-    private meta: Meta,
-    private authService: AuthService
-    ) {
-    this.meta.addTag({
+  loginValidationMessages = validationMessages.auth.login;
+
+  defaultState = {
+    email: '',
+    password: '',
+  };
+
+  private _toastrService = inject(ToastrService);
+  private _formBuilder = inject(NonNullableFormBuilder);
+  private _meta = inject(Meta);
+  private _authService = inject(AuthService);
+  private _router = inject(Router);
+
+  constructor() {
+    this._meta.addTag({
       name: 'Sign In',
-      content: 'JournayHub Sign in page'
-    })
-
-    this.signInForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern(
-            '^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%]).{8,}$'
-          ),
-        ],
-      ],
+      content: 'JournayHub Sign in page',
     });
-  }
 
-  get email() {
-    return this.signInForm.get('email');
-  }
-
-  get password() {
-    return this.signInForm.get('password');
+    this.signInForm = this._formBuilder.group({
+      email: [this.defaultState.email, [Validators.required, Validators.email]],
+      password: [this.defaultState.password, [Validators.required]],
+    });
   }
 
   onSubmit() {
@@ -61,13 +62,13 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.signInForm.value).subscribe({
+    this._authService.login(this.signInForm.value).subscribe({
       next: (response: any) => {
-        console.log('Login successful', response);
+        this._router.navigate(['/explore']);
       },
       error: (error: any) => {
-        console.error('Login failed', error);
+        this._toastrService.error('', error.error.Error.Message);
       },
-    })
+    });
   }
 }

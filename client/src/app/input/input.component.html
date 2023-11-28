@@ -1,0 +1,35 @@
+<div class="flex flex-col gap-2">
+  <label
+    [for]="inputId"
+    [ngClass]="{ 'after:content-[\'*\'] after:text-red-500': isRequired }"
+    >{{ label }}</label
+  >
+
+  <ng-container [ngSwitch]="inputType">
+    <input
+      *ngSwitchDefault
+      [id]="inputId"
+      [formControl]="control"
+      [type]="inputType"
+      class="border-light-600 border-2 p-3 rounded-md outline-none focus:border-dark-900 transition-colors"
+      [ngClass]="{
+        'border-red-500':
+          control?.invalid && (control?.dirty || control?.touched),
+        'border-light-600': !control?.invalid
+      }"
+    />
+
+    <textarea
+      *ngSwitchCase="'textarea'"
+      [id]="inputId"
+      [formControl]="control"
+      class="resize-none h-24 p-2 w-full border-2 rounded-md border-slate-100 focus:border-slate-300 placeholder-slate-800 text-slate-800 font-medium outline-none transition-colors"
+    ></textarea>
+  </ng-container>
+
+  <ng-container *ngIf="control.invalid && control.touched">
+    <div class="text-sm text-red-500">
+      {{ firstErrorMessage }}
+    </div>
+  </ng-container>
+</div>

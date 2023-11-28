@@ -1,0 +1,11 @@
+services:
+  impensa-server-dotnet-postgres:
+    container_name: jh-server
+    image: postgres:16
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: Journeyhub
+    restart: unless-stopped
