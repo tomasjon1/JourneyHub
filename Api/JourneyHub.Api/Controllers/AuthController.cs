@@ -41,8 +41,9 @@ namespace JourneyHub.Api.Controllers
             if (!isCorrect)
                 throw new BadRequestException(ErrorMessages.Invalid_Password);
 
-            var token = GenerateJwtToken(existingUser);
-            return Ok(new GenericResponse<string>(token));
+            var (token, expiration) = GenerateJwtToken(existingUser);
+            return Ok(new { Token = token, Expiration = expiration,
+                            Email = existingUser.Email, Name = existingUser.UserName  });
         }
 
         [HttpPost]
@@ -74,11 +75,12 @@ namespace JourneyHub.Api.Controllers
             if (!isCreated.Succeeded)
                 throw new BadRequestException(string.Join("; ", isCreated.Errors.Select(e => e.Description)));
 
-            var token = GenerateJwtToken(newUser);
-            return Ok(new GenericResponse<string>(token));
+            var (token, expiration) = GenerateJwtToken(newUser);
+            return Ok(new { Token = token, Expiration = expiration,
+                            Email = newUser.Email, Name = requestDto.Name });
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        private (string Token, DateTime Expiration) GenerateJwtToken(IdentityUser user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtConfig.Secret);
@@ -90,15 +92,20 @@ namespace JourneyHub.Api.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
+            var expiration = DateTime.UtcNow.AddHours(_jwtConfig.ExpirationInHours);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(_jwtConfig.ExpirationInHours),
+                Expires = expiration,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
-            return jwtTokenHandler.WriteToken(token);
+            var tokenString = jwtTokenHandler.WriteToken(token);
+
+            return (Token: tokenString, Expiration: expiration);
         }
+
     }
 }
