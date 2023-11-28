@@ -5,48 +5,21 @@
     (ngSubmit)="onSubmit()"
     class="max-w-sm w-full flex flex-col gap-8"
   >
-    <div class="flex flex-col gap-2 w-full">
-      <label for="email">Email</label>
-      <input
-        formControlName="email"
-        id="email"
-        type="email"
-        class="border-light-600 border-2 p-3 rounded-md outline-none focus:border-dark-900"
-      />
-      <div
-        *ngIf="email?.invalid && (email?.dirty || email?.touched)"
-        class="text-red-700"
-      >
-        <div *ngIf="email?.errors?.['required']">Email is required.</div>
-        <div *ngIf="email?.errors?.['email']">
-          Please enter a valid email address.
-        </div>
-      </div>
-    </div>
+    <app-input
+      [control]="signInForm.controls.email"
+      inputId="email"
+      inputType="email"
+      label="Email"
+      [customErrorMessages]="loginValidationMessages.email"
+    />
 
-    <div class="flex flex-col gap-2 w-full">
-      <label for="password">Password</label>
-      <input
-        formControlName="password"
-        id="password"
-        type="password"
-        class="border-light-600 border-2 p-3 rounded-md outline-none focus:border-dark-900"
-      />
-      <div
-        *ngIf="password?.invalid && (password?.dirty || password?.touched)"
-        class="text-red-700"
-      >
-        <div *ngIf="password?.errors?.['required']">Password is required.</div>
-        <div *ngIf="password?.errors?.['minlength']">
-          Password must be at least 8 characters long.
-        </div>
-        <div *ngIf="password?.errors?.['pattern']">
-          Password must include uppercase and lowercase letters, a number, and a
-          special character.
-        </div>
-      </div>
-    </div>
-
+    <app-input
+      inputId="password"
+      inputType="password"
+      [label]="'Password'"
+      [control]="signInForm.controls.password"
+      [customErrorMessages]="loginValidationMessages.password"
+    ></app-input>
     <button
       [disabled]="signInForm.invalid"
       class="bg-dark-900 hover:bg-opacity-80 transition text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"

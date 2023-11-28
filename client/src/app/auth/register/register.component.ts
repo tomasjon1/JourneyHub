@@ -8,23 +8,28 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterModule,
-} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { InputComponent } from 'src/app/input/input.component';
+import { validationMessages } from 'src/app/shared/content/validation-messages';
 
 @Component({
   standalone: true,
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
+    InputComponent,
+  ],
 })
 export class RegisterComponent {
   signUpForm: FormGroup;
+
+  registerValidationMessages = validationMessages.auth.register;
 
   private _toastrService = inject(ToastrService);
   private _formBuilder = inject(FormBuilder);
