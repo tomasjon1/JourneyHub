@@ -12,6 +12,11 @@
       [formControl]="control"
       [type]="inputType"
       class="border-light-600 border-2 p-3 rounded-md outline-none focus:border-dark-900 transition-colors"
+      [ngClass]="{
+        'border-red-500':
+          control?.invalid && (control?.dirty || control?.touched),
+        'border-light-600': !control?.invalid
+      }"
     />
 
     <textarea
