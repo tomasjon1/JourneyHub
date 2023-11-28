@@ -6,5 +6,6 @@ namespace JourneyHub.Api.Services.Interfaces
     public interface ITripServices
     {
         Task<Trip> CreateTripAsync(PostTripRequestDto tripDto);
+        Task<string> getAreaByCoordinates(MapPoint firstMapPoint);
     }
 }
