@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JourneyHub.Common.Models.Dtos.Responses
+namespace JourneyHub.Common.Models.Dtos.Requests
 {
     public class UserLoginRequestDto
     {
