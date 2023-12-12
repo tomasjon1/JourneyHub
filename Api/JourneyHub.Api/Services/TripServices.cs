@@ -3,6 +3,9 @@ using JourneyHub.Api.Services.Interfaces;
 using JourneyHub.Common.Models.Domain;
 using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 
 namespace JourneyHub.Api.Services
 {
@@ -21,10 +24,88 @@ namespace JourneyHub.Api.Services
         {
             Trip trip = _mapper.Map<Trip>(tripDto);
 
+            trip.Area = getAreaByCoordinatesAsync(tripDto.MapPoints[0]).Result;
             _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
 
             return trip;
+        }
+
+        public async Task<IEnumerable<Trip>> GetAllTripsAsync()
+        {
+            return await _context.Trips.ToListAsync();
+        }
+
+        public async Task<Trip> GetTripByIdAsync(int id)
+        {
+            return await _context.Trips.FindAsync(id);
+        }
+
+        public async Task<bool> DeleteTripAsync(int id)
+        {
+            var trip = await _context.Trips.FindAsync(id);
+            if (trip == null)
+            {
+                return false;
+            }
+
+            _context.Trips.Remove(trip);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        //public async Task<Trip> UpdateTripAsync(int id, PostTripRequestDto tripDto)
+        //{
+        //    var trip = await _context.Trips.FindAsync(id);
+        //    if (trip == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    _mapper.Map(tripDto, trip);
+
+        //    _context.Trips.Update(trip);
+        //    await _context.SaveChangesAsync();
+
+        //    return trip;
+        //}
+
+        public async Task<string> getAreaByCoordinatesAsync(MapPoint MapPoint)
+        {
+            string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Latitude.ToString() + "&lon=" + MapPoint.Longitude.ToString() + "&format=json";
+
+            var client = new HttpClient();
+
+            var productValue = new ProductInfoHeaderValue("ScraperBot", "1.0");
+            var commentValue = new ProductInfoHeaderValue("(+http://www.example.com/ScraperBot.html)");
+
+            client.DefaultRequestHeaders.UserAgent.Add(productValue);
+            client.DefaultRequestHeaders.UserAgent.Add(commentValue);
+
+            client.BaseAddress = new Uri(_address);
+            HttpResponseMessage response = await client.GetAsync(new Uri(_address));
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+
+            string patterncountry = @"""\bcountry""\:""(\w+)\b""";
+
+            Match match = Regex.Match(result, patterncountry);
+            string countryName = String.Empty;
+            if (match.Success)
+            {
+                countryName = match.Value;
+            }
+            string patterncity = @"""\bcity""\:""(\w+)\b""";
+
+            Match matchcity = Regex.Match(result, patterncity);
+            string cityName = String.Empty;
+            if (matchcity.Success)
+            {
+                cityName = matchcity.Value;
+            }
+
+            return countryName + " " + cityName;
         }
     }
 }
