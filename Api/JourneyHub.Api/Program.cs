@@ -68,9 +68,10 @@ namespace JourneyHub
             app.UseExceptionHandler(c => c.Run(ExceptionHandlerMiddleware.InvokeAsync));
 
             app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
 
             app.UseHttpsRedirection();
 
