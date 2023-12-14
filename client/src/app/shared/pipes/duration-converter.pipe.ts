@@ -16,11 +16,11 @@ export class DurationConverterPipe implements PipeTransform {
     const totalDays = value / 86400;
 
     if (totalDays >= 1) {
-      return `${totalDays.toFixed(1)} d${totalDays >= 2 ? 's' : ''}`;
+      return `${totalDays.toFixed(1)} d`;
     } else if (totalHours >= 1) {
-      return `${totalHours.toFixed(1)} h${totalHours >= 2 ? 's' : ''}`;
+      return `${totalHours.toFixed(1)} h`;
     } else {
-      return `${totalMinutes.toFixed(1)} m${totalMinutes >= 2 ? 's' : ''}`;
+      return `${totalMinutes.toFixed(1)} m`;
     }
   }
 }

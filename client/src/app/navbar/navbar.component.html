@@ -46,26 +46,25 @@
     >
       <img class="w-8" src="../../assets/jh-logo.svg" alt="JourneyHub logo" />
     </div>
-
-    <div
-      class="absolute top-20 right-5 bg-white py-5 rounded-md shadow-lg font-medium"
-      id="hover-content"
-      *ngIf="showDialog"
-    >
-      <ul class="flex flex-col">
-        <li
-          class="flex items-center px-5 py-3 gap-4 hover:bg-light-400 w-full cursor-pointer transition-colors"
-          routerLink="/profile"
-        >
-          <i class="fa-solid fa-user"></i>Profile
-        </li>
-        <li
-          (click)="onLogout()"
-          class="flex items-center px-5 py-3 gap-4 hover:bg-light-400 w-full cursor-pointer transition-colors"
-        >
-          <i class="fa-solid fa-right-from-bracket"></i>Sign out
-        </li>
-      </ul>
-    </div>
+  </div>
+  <div
+    class="absolute top-20 right-6 bg-white py-6 rounded-md shadow-lg font-medium z-100"
+    id="hover-content"
+    *ngIf="showDialog"
+  >
+    <ul class="flex flex-col z-100">
+      <li
+        class="flex items-center px-5 py-3 gap-4 hover:bg-light-400 w-full cursor-pointer transition-colors"
+        routerLink="/profile"
+      >
+        <i class="fa-solid fa-user"></i>Profile
+      </li>
+      <li
+        (click)="onLogout()"
+        class="flex items-center px-5 py-3 gap-4 hover:bg-light-400 w-full cursor-pointer transition-colors"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>Sign out
+      </li>
+    </ul>
   </div>
 </nav>
