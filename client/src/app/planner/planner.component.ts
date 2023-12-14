@@ -65,7 +65,7 @@ export class PlannerComponent implements OnInit {
   markers: Marker[] = [];
   routeLayer: any;
 
-  private arrowLayer: any; // for polyline decorator
+  private arrowLayer: any;
 
   private _plannerService = inject(PlannerService);
 
@@ -75,6 +75,7 @@ export class PlannerComponent implements OnInit {
 
   private initializeMapOptions(): void {
     this.mapOptions = {
+      zoom: 12,
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
@@ -82,7 +83,6 @@ export class PlannerComponent implements OnInit {
           zIndex: 10,
         }),
       ],
-      zoom: 5,
       center: latLng(54.723079, 25.2333521),
     };
   }
@@ -94,16 +94,12 @@ export class PlannerComponent implements OnInit {
 
   startIcon = new Icon({
     iconUrl: '../assets/starting-point-icon.svg',
-    iconSize: [20, 20], // Size of the icon
-    iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location
-    popupAnchor: [1, -34], // Point from which the popup should open relative to the iconAnchor
+    iconSize: [20, 20],
   });
 
   otherIcon = new Icon({
     iconUrl: '../assets/mid-point-icon.svg',
     iconSize: [20, 20],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
   });
 
   getLocation(): void {
@@ -142,14 +138,13 @@ export class PlannerComponent implements OnInit {
     const index = this.markers.indexOf(movedMarker);
     this.waypoints[index] = movedMarker.getLatLng();
 
-    // Update the route to reflect the new marker position
     this.updateRoute();
   }
 
   private updateRoute(): void {
     console.log(this.waypoints);
     if (this.waypoints.length < 2) {
-      return; // Need at least two points to draw a route
+      return;
     }
 
     this._plannerService.getRoute(this.waypoints).subscribe(
@@ -162,26 +157,29 @@ export class PlannerComponent implements OnInit {
           this.map.removeLayer(this.arrowLayer);
         }
 
-        // Assuming the API returns the route as an encoded polyline
         const routeCoordinates = decodePolyline(data.routes[0].geometry);
+
+        this.markers[0].setLatLng(routeCoordinates[0]);
+        this.markers[this.markers.length-1].setLatLng(routeCoordinates[routeCoordinates.length-1]);
+
+
         this.routeLayer = polyline(routeCoordinates, {
           color: '#DB2B35',
           weight: 7,
           opacity: 1,
         }).addTo(this.map);
 
-        // Add direction arrows using PolylineDecorator
         this.arrowLayer = new PolylineDecorator(this.routeLayer, {
           patterns: [
             {
-              repeat: '300', // Adjust as needed for your map scale and polyline length
+              repeat: '300',
               offset: 40,
               symbol: Symbol.arrowHead({
                 pixelSize: 15,
                 pathOptions: {
-                  color: '#0084A0', // Set color to white
+                  color: '#0084A0',
                   fillOpacity: 1,
-                  weight: 0, // Keep this smaller than the pixelSize
+                  weight: 0,
                 },
               }),
             },
