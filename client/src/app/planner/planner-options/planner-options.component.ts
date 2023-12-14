@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { DistanceConverterPipe } from 'src/app/shared/pipes/distance-converter.pipe';
 
 interface Marker {
   lat: string;
@@ -10,8 +11,9 @@ interface Marker {
   standalone: true,
   selector: 'app-planner-options',
   templateUrl: './planner-options.component.html',
-  imports: [CommonModule],
+  imports: [CommonModule, DistanceConverterPipe],
 })
 export class PlannerOptionsComponent {
   @Input() markers: Marker[] = [];
+  @Input() distance:number = 0;
 }

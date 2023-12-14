@@ -64,6 +64,7 @@ export class PlannerComponent implements OnInit {
   waypoints: LatLng[] = [];
   markers: Marker[] = [];
   routeLayer: any;
+  distance: number = 0;
 
   private arrowLayer: any;
 
@@ -158,6 +159,8 @@ export class PlannerComponent implements OnInit {
         }
 
         const routeCoordinates = decodePolyline(data.routes[0].geometry);
+
+        this.distance = data.routes[0].distance;
 
         this.markers[0].setLatLng(routeCoordinates[0]);
         this.markers[this.markers.length-1].setLatLng(routeCoordinates[routeCoordinates.length-1]);
