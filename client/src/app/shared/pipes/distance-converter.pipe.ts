@@ -15,7 +15,7 @@ export class DistanceConverterPipe implements PipeTransform {
       const kilometers = value / 1000;
       return kilometers.toFixed(2) + ' km';
     } else {
-      return value + ' m';
+      return value.toFixed(1) + ' m';
     }
   }
 }
