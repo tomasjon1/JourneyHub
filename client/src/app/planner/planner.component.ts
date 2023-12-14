@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import {
   LatLng,
@@ -65,13 +65,24 @@ export class PlannerComponent implements OnInit {
   markers: Marker[] = [];
   routeLayer: any;
   distance: number = 0;
+  duration: number = 0;
+
+  isAddMode: boolean = true;
 
   private arrowLayer: any;
 
   private _plannerService = inject(PlannerService);
+  private cdRef = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.initializeMapOptions();
+  }
+
+  toggleMode(isAddMode: boolean): void {
+    // Handle the mode change here
+    // For example, you can assign it to a property
+    this.isAddMode = isAddMode;
+    console.log(isAddMode);
   }
 
   private initializeMapOptions(): void {
@@ -91,6 +102,9 @@ export class PlannerComponent implements OnInit {
   onMapReady(map: Map): void {
     this.map = map;
     this.map.on('click', this.onMapClick.bind(this));
+    this.markers.forEach((marker) => {
+      marker.on('click', (e) => this.onMarkerClick(e, marker));
+    });
   }
 
   startIcon = new Icon({
@@ -116,6 +130,34 @@ export class PlannerComponent implements OnInit {
   }
 
   private onMapClick(e: any): void {
+    if (this.isAddMode) {
+      this.addPoint(e);
+    }
+  }
+  private onMarkerClick(e: any, clickedMarker: Marker): void {
+    if (!this.isAddMode) {
+      this.removePoint(clickedMarker);
+    }
+  }
+
+  private removePoint(clickedMarker: Marker): void {
+    const index = this.markers.indexOf(clickedMarker);
+
+    if (index > -1) {
+      this.map.removeLayer(clickedMarker);
+      this.markers.splice(index, 1);
+      this.waypoints.splice(index, 1);
+
+      // If the removed marker was the first one (start icon), update the next marker
+      if (index === 0 && this.markers.length > 0) {
+        this.markers[0].setIcon(this.startIcon);
+      }
+
+      this.updateRoute();
+    }
+  }
+
+  private addPoint(e: any): void {
     const newPoint = latLng(e.latlng.lat, e.latlng.lng);
     this.waypoints.push(newPoint);
 
@@ -129,6 +171,13 @@ export class PlannerComponent implements OnInit {
 
     newMarker.on('dragend', () => this.onMarkerDragEnd(newMarker));
     this.markers.push(newMarker);
+
+    newMarker.on('click', () => {
+      if (!this.isAddMode) {
+        this.removePoint(newMarker);
+        this.updateRoute();
+      }
+    });
 
     if (this.waypoints.length > 1) {
       this.updateRoute();
@@ -145,6 +194,11 @@ export class PlannerComponent implements OnInit {
   private updateRoute(): void {
     console.log(this.waypoints);
     if (this.waypoints.length < 2) {
+      this.map.removeLayer(this.routeLayer);
+      this.map.removeLayer(this.arrowLayer);
+      this.distance = 0;
+      this.duration = 0;
+
       return;
     }
 
@@ -161,10 +215,16 @@ export class PlannerComponent implements OnInit {
         const routeCoordinates = decodePolyline(data.routes[0].geometry);
 
         this.distance = data.routes[0].distance;
+        this.duration = data.routes[0].duration;
+
+        this.cdRef.detectChanges();
+
+        console.log(this.distance, this.duration);
 
         this.markers[0].setLatLng(routeCoordinates[0]);
-        this.markers[this.markers.length-1].setLatLng(routeCoordinates[routeCoordinates.length-1]);
-
+        this.markers[this.markers.length - 1].setLatLng(
+          routeCoordinates[routeCoordinates.length - 1]
+        );
 
         this.routeLayer = polyline(routeCoordinates, {
           color: '#DB2B35',

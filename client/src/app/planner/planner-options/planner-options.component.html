@@ -1,5 +1,5 @@
 <div
-  class="w-72 h-full rounded-md p-6 bg-light-400 flex flex-col justify-between"
+  class="w-80 h-full rounded-md p-6 bg-light-300 flex flex-col justify-between"
 >
   <div class="flex flex-col gap-10">
     <div class="flex flex-col gap-4">
@@ -11,10 +11,46 @@
     </div>
 
     <div class="flex flex-col gap-4">
+      <h2 class="text-xl font-semibold">Mode</h2>
+      <div class="flex gap-3">
+        <button
+          class="border-2 border-light-700 text-sm w-36 py-3 rounded-md flex flex-col"
+          [ngClass]="{
+            '!border-dark-900': isAddMode,
+            'mode-button': !isAddMode
+          }"
+          (click)="toggleMode(true)"
+        >
+          <i
+            class="fa-solid fa-compass-drafting fa-2xl h-10 flex items-center justify-center"
+          ></i>
+          <span class="font-semibold">Planning mode</span>
+        </button>
+        <button
+          class="border-2 border-light-700 text-sm w-36 py-3 rounded-md flex flex-col"
+          [ngClass]="{
+            '!border-dark-900': !isAddMode,
+            'mode-button': isAddMode
+          }"
+          (click)="toggleMode(false)"
+        >
+          <i
+            class="fa-solid fa-delete-left fa-2xl h-10 flex items-center justify-center"
+          ></i>
+          <span class="font-semibold">Removal mode</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4">
       <h2 class="text-xl font-semibold">Route</h2>
       <div class="flex flex-col gap-3">
-        <span>Distance: <strong>{{distance | distanceConverter}}</strong></span>
-        <span>Duration: <strong>123</strong></span>
+        <span
+          >Distance: <strong>{{ distance | distanceConverter }}</strong></span
+        >
+        <span
+          >Duration: <strong>{{ duration | durationConverter }}</strong></span
+        >
       </div>
     </div>
   </div>
