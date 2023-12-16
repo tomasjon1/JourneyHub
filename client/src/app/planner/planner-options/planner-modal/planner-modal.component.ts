@@ -19,7 +19,7 @@ import { validationMessages } from 'src/app/shared/content/validation-messages';
   imports: [CommonModule, InputComponent, ReactiveFormsModule, FormsModule],
 })
 export class PlannerModalComponent {
-  showModal = true;
+  showModal = false;
   currentPage = 1;
   toggleModal() {
     this.showModal = !this.showModal;
