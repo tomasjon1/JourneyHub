@@ -18,6 +18,7 @@ import { PlannerModalComponent } from './planner-modal/planner-modal.component';
 export class PlannerOptionsComponent {
   @Input() distance: number = 0;
   @Input() duration: number = 0;
+  @Input() waypoints: any;
   @Output() modeChangeEvent = new EventEmitter<boolean>();
   isAddMode: boolean = true;
 
