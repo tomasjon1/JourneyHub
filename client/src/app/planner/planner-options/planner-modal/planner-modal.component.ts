@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, HostListener } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -31,6 +31,13 @@ export class PlannerModalComponent {
     routeName: '',
     routeDesc: '',
   };
+
+  @HostListener('window:keydown.escape', ['$event'])
+  onEscapePress(event: KeyboardEvent) {
+    if (this.showModal) {
+      this.toggleModal();
+    }
+  }
 
   private _toastrService = inject(ToastrService);
   private _formBuilder = inject(NonNullableFormBuilder);
