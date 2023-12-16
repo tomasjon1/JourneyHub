@@ -1,0 +1,16 @@
+<div class="w-full h-[calc(100vh-112px)] flex gap-6">
+  <app-planner-options
+    [distance]="distance"
+    [duration]="duration"
+    (modeChangeEvent)="toggleMode($event)"
+    [waypoints]="waypoints"
+    (clearMapEvent)="clearAllPoints()"
+  />
+
+  <div
+    class="rounded-md h-full md:h-full w-full !z-0 !cursor-crosshair"
+    leaflet
+    [leafletOptions]="mapOptions"
+    (leafletMapReady)="onMapReady($event)"
+  ></div>
+</div>
