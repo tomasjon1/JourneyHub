@@ -54,7 +54,12 @@
       </div>
     </div>
   </div>
-  <button class="bg-dark-900 text-white font-semibold rounded-md p-3 w-full">
+  <button
+    (click)="plannerModal.toggleModal()"
+    class="bg-dark-900 hover:bg-opacity-80 transition w-full text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
+  >
     Save custom route
   </button>
 </div>
+
+<app-planner-modal #plannerModal />

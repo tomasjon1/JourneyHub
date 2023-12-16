@@ -16,6 +16,7 @@ import { PlannerOptionsComponent } from './planner-options/planner-options.compo
 import { PlannerService } from './planner.service';
 import 'leaflet-polylinedecorator';
 import { PolylineDecorator } from 'leaflet';
+import { PlannerModalComponent } from './planner-options/planner-modal/planner-modal.component';
 
 function decodePolyline(encoded: string): LatLng[] {
   let points: LatLng[] = [];
@@ -56,7 +57,7 @@ function decodePolyline(encoded: string): LatLng[] {
   standalone: true,
   selector: 'app-planner',
   templateUrl: './planner.component.html',
-  imports: [LeafletModule, PlannerOptionsComponent],
+  imports: [LeafletModule, PlannerOptionsComponent, PlannerModalComponent],
 })
 export class PlannerComponent implements OnInit {
   mapOptions!: MapOptions;
@@ -79,8 +80,6 @@ export class PlannerComponent implements OnInit {
   }
 
   toggleMode(isAddMode: boolean): void {
-    // Handle the mode change here
-    // For example, you can assign it to a property
     this.isAddMode = isAddMode;
     console.log(isAddMode);
   }
@@ -148,7 +147,6 @@ export class PlannerComponent implements OnInit {
       this.markers.splice(index, 1);
       this.waypoints.splice(index, 1);
 
-      // If the removed marker was the first one (start icon), update the next marker
       if (index === 0 && this.markers.length > 0) {
         this.markers[0].setIcon(this.startIcon);
       }
