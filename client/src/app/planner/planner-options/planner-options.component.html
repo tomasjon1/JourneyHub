@@ -54,13 +54,22 @@
       </div>
     </div>
   </div>
-  <button
-    (click)="plannerModal.toggleModal()"
-    [disabled]="waypoints.length < 2"
-    class="bg-dark-900 hover:bg-opacity-80 transition w-full text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
-  >
-    Save custom route
-  </button>
+  <div class="w-full flex flex-col gap-3">
+    <button
+      (click)="plannerModal.toggleModal()"
+      [disabled]="waypoints.length < 2"
+      class="bg-dark-900 hover:bg-opacity-80 transition w-full text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
+    >
+      Save custom route
+    </button>
+    <button
+      (click)="onClearMap()"
+      [disabled]="waypoints.length < 1"
+      class="bg-dark-900 hover:bg-opacity-80 transition w-full text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
+    >
+      Clear map
+    </button>
+  </div>
 </div>
 
 <app-planner-modal #plannerModal />

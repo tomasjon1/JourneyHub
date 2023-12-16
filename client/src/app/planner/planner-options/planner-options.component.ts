@@ -20,10 +20,15 @@ export class PlannerOptionsComponent {
   @Input() duration: number = 0;
   @Input() waypoints: any;
   @Output() modeChangeEvent = new EventEmitter<boolean>();
+  @Output() clearMapEvent = new EventEmitter<void>();
   isAddMode: boolean = true;
 
   toggleMode(newMode: boolean): void {
     this.isAddMode = newMode;
     this.modeChangeEvent.emit(newMode);
+  }
+
+  onClearMap() {
+    this.clearMapEvent.emit();
   }
 }

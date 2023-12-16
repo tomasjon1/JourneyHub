@@ -116,6 +116,22 @@ export class PlannerComponent implements OnInit {
     iconSize: [20, 20],
   });
 
+  clearAllPoints(): void {
+    this.waypoints = [];
+    this.distance = 0;
+    this.duration = 0;
+    this.markers.forEach((marker) => this.map.removeLayer(marker));
+    this.markers = [];
+    if (this.routeLayer) {
+      this.map.removeLayer(this.routeLayer);
+    }
+    if (this.arrowLayer) {
+      this.map.removeLayer(this.arrowLayer);
+    }
+    // Trigger any necessary change detection
+    this.cdRef.detectChanges();
+  }
+
   getLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
