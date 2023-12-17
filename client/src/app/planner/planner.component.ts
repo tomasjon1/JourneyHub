@@ -67,7 +67,7 @@ export class PlannerComponent implements OnInit {
   routeLayer: any;
   distance: number = 0;
   duration: number = 0;
-
+  routeCoordinates: LatLng[] = [];
   isAddMode: boolean = true;
 
   private arrowLayer: any;
@@ -231,9 +231,9 @@ export class PlannerComponent implements OnInit {
         this.distance = data.routes[0].distance;
         this.duration = data.routes[0].duration;
 
-        this.cdRef.detectChanges();
+        this.routeCoordinates = routeCoordinates;
 
-        console.log(this.distance, this.duration);
+        this.cdRef.detectChanges();
 
         this.markers[0].setLatLng(routeCoordinates[0]);
         this.markers[this.markers.length - 1].setLatLng(
@@ -245,6 +245,8 @@ export class PlannerComponent implements OnInit {
           weight: 7,
           opacity: 1,
         }).addTo(this.map);
+
+        console.log(routeCoordinates);
 
         this.arrowLayer = new PolylineDecorator(this.routeLayer, {
           patterns: [

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, HostListener } from '@angular/core';
+import { Component, inject, HostListener, Input } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { InputComponent } from 'src/app/input/input.component';
 import { validationMessages } from 'src/app/shared/content/validation-messages';
+import { PlannerService } from '../../planner.service';
 
 @Component({
   standalone: true,
@@ -19,6 +20,9 @@ import { validationMessages } from 'src/app/shared/content/validation-messages';
   imports: [CommonModule, InputComponent, ReactiveFormsModule, FormsModule],
 })
 export class PlannerModalComponent {
+  @Input() routeCoordinates: any;
+  @Input() markers: any;
+
   showModal = false;
   currentPage = 1;
   toggleModal() {
@@ -29,7 +33,8 @@ export class PlannerModalComponent {
 
   defaultState = {
     routeName: '',
-    routeDesc: '',
+    routeDescription: '',
+    routeVisibility: 'private',
   };
 
   @HostListener('window:keydown.escape', ['$event'])
@@ -42,6 +47,7 @@ export class PlannerModalComponent {
   private _toastrService = inject(ToastrService);
   private _formBuilder = inject(NonNullableFormBuilder);
   private _router = inject(Router);
+  private _plannerService = inject(PlannerService);
 
   planningfValidationMessages = validationMessages.planning;
 
@@ -57,7 +63,8 @@ export class PlannerModalComponent {
           Validators.maxLength(16),
         ],
       ],
-      routeDesc: [this.defaultState.routeDesc],
+      routeDescription: [this.defaultState.routeDescription],
+      visibility: [this.defaultState.routeVisibility, Validators.required],
     });
   }
 
@@ -105,5 +112,26 @@ export class PlannerModalComponent {
       });
       return;
     }
+
+    const markerCoords = this._plannerService.extractCoordsFromMarkers(
+      this.markers
+    );
+    console.log('markers', markerCoords);
+    const formData = {
+      ...this.saveRouteForm.value,
+      mapPoints: this.routeCoordinates,
+      mapMarkers: markerCoords,
+    };
+    console.log(formData);
+    this._plannerService.saveTrail(formData).subscribe({
+      next: (response: any) => {
+        this._toastrService.success('', 'Trail created successfully'),
+          this._router.navigate(['/explore']);
+      },
+      error: (error: any) => {
+        console.log(error);
+        this._toastrService.error('', error.error.Error.Message);
+      },
+    });
   }
 }

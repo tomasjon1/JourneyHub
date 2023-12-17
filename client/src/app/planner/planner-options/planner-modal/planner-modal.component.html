@@ -51,7 +51,7 @@
             inputId="route-desc"
             inputType="textarea"
             [label]="'Route description'"
-            [control]="saveRouteForm.controls.routeDesc"
+            [control]="saveRouteForm.controls.routeDescription"
           ></app-input>
 
           <hr />
@@ -122,12 +122,11 @@
               >Who can view</label
             >
             <select
-              name="cars"
-              id="cars"
+              formControlName="visibility"
               class="border-light-600 border-2 p-3 rounded-md outline-none focus:border-dark-900 transition-colors"
             >
-              <option value="volvo">Everyone can view</option>
-              <option value="saab">Only I can view</option>
+              <option value="public">Everyone can view</option>
+              <option value="private">Only I can view</option>
             </select>
           </div>
 
