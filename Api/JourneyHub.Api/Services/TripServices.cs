@@ -73,7 +73,7 @@ namespace JourneyHub.Api.Services
 
         public async Task<string> getAreaByCoordinatesAsync(MapPoint MapPoint)
         {
-            string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Latitude.ToString() + "&lon=" + MapPoint.Longitude.ToString() + "&format=json";
+            string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Lat.ToString() + "&lon=" + MapPoint.Lng.ToString() + "&format=json";
 
             var client = new HttpClient();
 

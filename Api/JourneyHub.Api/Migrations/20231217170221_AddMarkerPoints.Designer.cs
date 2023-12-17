@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JourneyHub.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231127192845_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231217170221_AddMarkerPoints")]
+    partial class AddMarkerPoints
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,14 @@ namespace JourneyHub.Api.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MapMarkers")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("MapPoints")
                         .IsRequired()

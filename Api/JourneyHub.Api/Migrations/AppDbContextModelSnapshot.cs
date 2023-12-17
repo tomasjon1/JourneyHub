@@ -34,6 +34,10 @@ namespace JourneyHub.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("MapMarkers")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("MapPoints")
                         .IsRequired()
                         .HasColumnType("text");

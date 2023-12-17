@@ -7,6 +7,7 @@
         public string RouteDescription { get; set; }
         public string Visibility { get; set; }
         public string MapPoints { get; set; }
+        public string MapMarkers { get; set; }
         public string Area { get; set; }
     }
 }
