@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DistanceConverterPipe } from 'src/app/shared/pipes/distance-converter.pipe';
 import { DurationConverterPipe } from 'src/app/shared/pipes/duration-converter.pipe';
 import { PlannerModalComponent } from './planner-modal/planner-modal.component';
+import { LatLng } from 'leaflet';
 
 @Component({
   standalone: true,
@@ -18,7 +19,7 @@ import { PlannerModalComponent } from './planner-modal/planner-modal.component';
 export class PlannerOptionsComponent {
   @Input() distance: number = 0;
   @Input() duration: number = 0;
-  @Input() routeCoordinates: any;
+  @Input() routeCoordinates: LatLng[] = [];
   @Input() markers: any;
   @Output() modeChangeEvent = new EventEmitter<boolean>();
   @Output() clearMapEvent = new EventEmitter<void>();

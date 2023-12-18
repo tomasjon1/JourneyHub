@@ -20,41 +20,6 @@ import 'leaflet-polylinedecorator';
 import { PolylineDecorator } from 'leaflet';
 import { PlannerModalComponent } from './planner-options/planner-modal/planner-modal.component';
 
-function decodePolyline(encoded: string): LatLng[] {
-  let points: LatLng[] = [];
-  let index = 0,
-    len = encoded.length;
-  let lat = 0,
-    lng = 0;
-
-  while (index < len) {
-    let b,
-      shift = 0,
-      result = 0;
-    do {
-      b = encoded.charCodeAt(index++) - 63;
-      result |= (b & 0x1f) << shift;
-      shift += 5;
-    } while (b >= 0x20);
-    let dlat = result & 1 ? ~(result >> 1) : result >> 1;
-    lat += dlat;
-
-    shift = 0;
-    result = 0;
-    do {
-      b = encoded.charCodeAt(index++) - 63;
-      result |= (b & 0x1f) << shift;
-      shift += 5;
-    } while (b >= 0x20);
-    let dlng = result & 1 ? ~(result >> 1) : result >> 1;
-    lng += dlng;
-
-    points.push(latLng(lat / 1e5, lng / 1e5));
-  }
-
-  return points;
-}
-
 @Component({
   standalone: true,
   selector: 'app-planner',
@@ -103,9 +68,12 @@ export class PlannerComponent implements OnInit {
   onMapReady(map: Map): void {
     this.map = map;
     this.map.on('click', this.onMapClick.bind(this));
+    this.map.on('zoomend', () => this.updatePolylineDecorator());
     this.markers.forEach((marker) => {
       marker.on('click', (e) => this.onMarkerClick(e, marker));
     });
+
+    this.updatePolylineDecorator();
     // let simpleMapScreenshoter = new SimpleMapScreenshoter().addTo(this.map);
 
     // let pluginOptions = {
@@ -150,6 +118,36 @@ export class PlannerComponent implements OnInit {
     iconUrl: '../assets/mid-point-icon.svg',
     iconSize: [20, 20],
   });
+
+  private updatePolylineDecorator(): void {
+    const currentZoom = this.map.getZoom();
+
+    if (currentZoom >= 13) {
+      if (!this.arrowLayer && this.routeLayer) {
+        this.arrowLayer = new PolylineDecorator(this.routeLayer, {
+          patterns: [
+            {
+              repeat: '300',
+              offset: 40,
+              symbol: Symbol.arrowHead({
+                pixelSize: 15,
+                pathOptions: {
+                  color: '#0084A0',
+                  fillOpacity: 1,
+                  weight: 0,
+                },
+              }),
+            },
+          ],
+        }).addTo(this.map);
+      }
+    } else {
+      if (this.arrowLayer) {
+        this.map.removeLayer(this.arrowLayer);
+        this.arrowLayer = null;
+      }
+    }
+  }
 
   clearAllPoints(): void {
     this.waypoints = [];
@@ -256,13 +254,15 @@ export class PlannerComponent implements OnInit {
         if (this.routeLayer) {
           this.map.removeLayer(this.routeLayer);
         }
-
         if (this.arrowLayer) {
           this.map.removeLayer(this.arrowLayer);
+          this.arrowLayer = null; // Reset the arrowLayer reference
         }
 
-        const routeCoordinates = decodePolyline(data.routes[0].geometry);
-
+        const routeCoordinates = this._plannerService.decodePolyline(
+          data.routes[0].geometry
+        );
+        console.log(routeCoordinates);
         this.distance = data.routes[0].distance;
         this.duration = data.routes[0].duration;
 
@@ -283,22 +283,7 @@ export class PlannerComponent implements OnInit {
 
         console.log(routeCoordinates);
 
-        this.arrowLayer = new PolylineDecorator(this.routeLayer, {
-          patterns: [
-            {
-              repeat: '300',
-              offset: 40,
-              symbol: Symbol.arrowHead({
-                pixelSize: 15,
-                pathOptions: {
-                  color: '#0084A0',
-                  fillOpacity: 1,
-                  weight: 0,
-                },
-              }),
-            },
-          ],
-        }).addTo(this.map);
+        this.updatePolylineDecorator();
       },
       (error) => {
         console.error('Error fetching the route:', error);
