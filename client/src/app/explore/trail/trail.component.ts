@@ -57,7 +57,10 @@ export class TrailComponent implements OnInit {
     this.expandView = !this.expandView;
     if (this.expandView) {
       // Initialize or update options for the expanded map
-      this.initializeMapOptions(this.trail.mapPoints[0]);
+      this.initializeMapOptions(
+        this.trail.mapPoints[0],
+        this.trail.mapPoints.length
+      );
 
       // Update polyline decorator for the expanded map
       if (this.expandedMap) {
@@ -65,6 +68,12 @@ export class TrailComponent implements OnInit {
         this.arrowLayer = null;
       }
     }
+  }
+
+  private getMidpoint(trailPoints: Location[]): Location {
+    const sortedPoints = this.removeOrderAndSort(trailPoints);
+    const midIndex = Math.floor(sortedPoints.length / 2);
+    return sortedPoints[midIndex];
   }
 
   onMapReady(map: Map): void {
@@ -88,19 +97,29 @@ export class TrailComponent implements OnInit {
           this.trail = response.data;
           if (this.trail.mapPoints) {
             const firstPoint = this.trail.mapPoints[0];
-            this.initializeMapOptions({
-              lat: firstPoint.lat,
-              lng: firstPoint.lng,
-            });
+            const midpoint = this.getMidpoint(this.trail.mapPoints);
+            this.initializeMapOptions(midpoint, this.trail.mapPoints.length);
           }
         },
         error: (error: any) => {},
       });
   }
 
-  private initializeMapOptions(initialPoint: any): void {
+  private determineZoomLevel(pointsCount: number): number {
+    if (pointsCount < 100) {
+      return 17;
+    } else if (pointsCount < 1000) {
+      return 10;
+    } else {
+      return 8;
+    }
+  }
+
+  private initializeMapOptions(midpoint: Location, pointsCount: number): void {
+    const zoomLevel = this.determineZoomLevel(pointsCount);
+
     this.mapOptions = {
-      zoom: 8,
+      zoom: zoomLevel,
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
@@ -108,7 +127,7 @@ export class TrailComponent implements OnInit {
           zIndex: 10,
         }),
       ],
-      center: latLng(initialPoint.lat, initialPoint.lng),
+      center: latLng(midpoint.lat, midpoint.lng),
     };
   }
 
