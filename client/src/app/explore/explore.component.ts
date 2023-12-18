@@ -3,6 +3,7 @@ import { PlannerService } from '../planner/planner.service';
 import { CommonModule } from '@angular/common';
 import { TrailItemComponent } from './trail-item/trail-item.component';
 import { Observable } from 'rxjs';
+import { FooterComponent } from '../footer/footer.component';
 
 interface Trail {
   routeName: string;
@@ -21,7 +22,7 @@ interface MapPoint {
   standalone: true,
   selector: 'app-explore',
   templateUrl: './explore.component.html',
-  imports: [CommonModule, TrailItemComponent],
+  imports: [CommonModule, TrailItemComponent, FooterComponent],
 })
 export class ExploreComponent implements OnInit {
   trails: Trail[] = [];

@@ -20,6 +20,7 @@ import {
 
 import 'leaflet-polylinedecorator';
 import { PolylineDecorator } from 'leaflet';
+import { FooterComponent } from 'src/app/footer/footer.component';
 
 interface Location {
   order?: number;
@@ -36,6 +37,7 @@ interface Location {
     LeafletModule,
     DistanceConverterPipe,
     DurationConverterPipe,
+    FooterComponent,
   ],
 })
 export class TrailComponent implements OnInit {
