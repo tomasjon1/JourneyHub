@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace JourneyHub.Api.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,12 @@ namespace JourneyHub.Api.Migrations
                     RouteName = table.Column<string>(type: "text", nullable: false),
                     RouteDescription = table.Column<string>(type: "text", nullable: false),
                     Visibility = table.Column<string>(type: "text", nullable: false),
-                    MapPoints = table.Column<string>(type: "text", nullable: false)
+                    MapPoints = table.Column<string>(type: "text", nullable: false),
+                    MapMarkers = table.Column<string>(type: "text", nullable: false),
+                    Area_Country = table.Column<string>(type: "text", nullable: false),
+                    Area_City = table.Column<string>(type: "text", nullable: false),
+                    Distance = table.Column<double>(type: "double precision", nullable: false),
+                    Duration = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {

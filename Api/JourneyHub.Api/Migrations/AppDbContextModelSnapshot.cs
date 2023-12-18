@@ -30,9 +30,11 @@ namespace JourneyHub.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<double>("Distance")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Duration")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("MapMarkers")
                         .IsRequired()
@@ -257,6 +259,33 @@ namespace JourneyHub.Api.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("JourneyHub.Common.Models.Domain.Trip", b =>
+                {
+                    b.OwnsOne("JourneyHub.Common.Models.Domain.AreaInfo", "Area", b1 =>
+                        {
+                            b1.Property<int>("TripId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("TripId");
+
+                            b1.ToTable("Trips");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TripId");
+                        });
+
+                    b.Navigation("Area")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

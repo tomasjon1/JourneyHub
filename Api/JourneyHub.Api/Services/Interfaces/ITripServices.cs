@@ -11,6 +11,6 @@ namespace JourneyHub.Api.Services.Interfaces
         Task<Trip> GetTripByIdAsync(int id);
         Task<bool> DeleteTripAsync(int id);
         //Task<Trip> UpdateTripAsync(int id, PostTripRequestDto tripDto);
-        Task<string> getAreaByCoordinatesAsync(MapPoint firstMapPoint);
+        Task<AreaInfo> getAreaByCoordinatesAsync(MapPoint mapPoint);
     }
 }

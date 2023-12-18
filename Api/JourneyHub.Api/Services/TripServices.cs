@@ -24,7 +24,7 @@ namespace JourneyHub.Api.Services
         {
             Trip trip = _mapper.Map<Trip>(tripDto);
 
-            trip.Area = getAreaByCoordinatesAsync(tripDto.MapPoints[0]).Result;
+            trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
             _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
 
@@ -71,7 +71,7 @@ namespace JourneyHub.Api.Services
         //    return trip;
         //}
 
-        public async Task<string> getAreaByCoordinatesAsync(MapPoint MapPoint)
+        public async Task<AreaInfo> getAreaByCoordinatesAsync(MapPoint MapPoint)
         {
             string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Lat.ToString() + "&lon=" + MapPoint.Lng.ToString() + "&format=json";
 
@@ -87,25 +87,18 @@ namespace JourneyHub.Api.Services
             HttpResponseMessage response = await client.GetAsync(new Uri(_address));
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsStringAsync();
+            
+            string patterncountry = @"""\bcountry\b"":""([^""]+)""";
+            string patterncity = @"""\bcity\b"":""([^""]+)""";
 
-            string patterncountry = @"""\bcountry""\:""(\w+)\b""";
+            Match matchCountry = Regex.Match(result, patterncountry);
+            string countryName = matchCountry.Groups[1].Value;
 
-            Match match = Regex.Match(result, patterncountry);
-            string countryName = String.Empty;
-            if (match.Success)
-            {
-                countryName = match.Value;
-            }
-            string patterncity = @"""\bcity""\:""(\w+)\b""";
+            Match matchCity = Regex.Match(result, patterncity);
+            string cityName = matchCity.Groups[1].Value;
 
-            Match matchcity = Regex.Match(result, patterncity);
-            string cityName = String.Empty;
-            if (matchcity.Success)
-            {
-                cityName = matchcity.Value;
-            }
 
-            return countryName + " " + cityName;
+            return new AreaInfo { Country = countryName, City = cityName };
         }
     }
 }

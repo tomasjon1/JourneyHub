@@ -7,6 +7,17 @@ namespace JourneyHub.Data
     public class AppDbContext : IdentityDbContext
     {
         public DbSet<Trip>? Trips { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); 
+
+            modelBuilder.Entity<Trip>(entity =>
+            {
+                entity.OwnsOne(t => t.Area);
+            });
+        }
     }
 }
