@@ -28,6 +28,7 @@ namespace JourneyHub
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+
             builder.Services.AddAuthentication(configureOptions:options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 

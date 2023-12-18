@@ -2,7 +2,9 @@
 using JourneyHub.Common.Models.Domain;
 using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Common.Models.Dtos.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace JourneyHub.Api.Controllers
 {
@@ -18,9 +20,11 @@ namespace JourneyHub.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTripAsync([FromBody] PostTripRequestDto tripDto)
         {
-            Trip trip = await _tripService.CreateTripAsync(tripDto);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Trip trip = await _tripService.CreateTripAsync(tripDto, userId);
             return Ok(new GenericResponse<Trip>(trip));
         }
 
@@ -44,9 +48,12 @@ namespace JourneyHub.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTripAsync(int id)
         {
-            var result = await _tripService.DeleteTripAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = await _tripService.DeleteTripAsync(id, userId);
             if (!result)
             {
                 return NotFound();
@@ -54,17 +61,5 @@ namespace JourneyHub.Api.Controllers
 
             return Ok();
         }
-
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateTripAsync(int id, [FromBody] PostTripRequestDto tripDto)
-        //{
-        //    var updatedTrip = await _tripService.UpdateTripAsync(id, tripDto);
-        //    if (updatedTrip == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(new GenericResponse<Trip>(updatedTrip));
-        //}
     }
 }

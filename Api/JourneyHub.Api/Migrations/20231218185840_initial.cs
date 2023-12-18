@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace JourneyHub.Api.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,11 +55,10 @@ namespace JourneyHub.Api.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     RouteName = table.Column<string>(type: "text", nullable: false),
                     RouteDescription = table.Column<string>(type: "text", nullable: false),
                     Visibility = table.Column<string>(type: "text", nullable: false),
-                    MapPoints = table.Column<string>(type: "text", nullable: false),
-                    MapMarkers = table.Column<string>(type: "text", nullable: false),
                     Area_Country = table.Column<string>(type: "text", nullable: false),
                     Area_City = table.Column<string>(type: "text", nullable: false),
                     Distance = table.Column<double>(type: "double precision", nullable: false),
@@ -176,6 +175,50 @@ namespace JourneyHub.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Trips_MapMarkers",
+                columns: table => new
+                {
+                    TripId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Order = table.Column<int>(type: "integer", nullable: false),
+                    Lat = table.Column<double>(type: "double precision", nullable: false),
+                    Lng = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips_MapMarkers", x => new { x.TripId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Trips_MapMarkers_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trips_MapPoints",
+                columns: table => new
+                {
+                    TripId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Order = table.Column<int>(type: "integer", nullable: false),
+                    Lat = table.Column<double>(type: "double precision", nullable: false),
+                    Lng = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips_MapPoints", x => new { x.TripId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Trips_MapPoints_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -232,13 +275,19 @@ namespace JourneyHub.Api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Trips");
+                name: "Trips_MapMarkers");
+
+            migrationBuilder.DropTable(
+                name: "Trips_MapPoints");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Trips");
         }
     }
 }

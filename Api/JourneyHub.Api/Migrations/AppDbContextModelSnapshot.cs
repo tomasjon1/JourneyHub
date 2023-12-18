@@ -44,6 +44,10 @@ namespace JourneyHub.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Visibility")
                         .IsRequired()
                         .HasColumnType("text");
@@ -293,6 +297,9 @@ namespace JourneyHub.Api.Migrations
                             b1.Property<double>("Lng")
                                 .HasColumnType("double precision");
 
+                            b1.Property<int>("Order")
+                                .HasColumnType("integer");
+
                             b1.HasKey("TripId", "Id");
 
                             b1.ToTable("Trips_MapMarkers");
@@ -317,6 +324,9 @@ namespace JourneyHub.Api.Migrations
 
                             b1.Property<double>("Lng")
                                 .HasColumnType("double precision");
+
+                            b1.Property<int>("Order")
+                                .HasColumnType("integer");
 
                             b1.HasKey("TripId", "Id");
 

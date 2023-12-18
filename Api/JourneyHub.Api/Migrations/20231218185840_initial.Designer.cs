@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JourneyHub.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231218093006_Initial")]
-    partial class Initial
+    [Migration("20231218185840_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,19 +38,15 @@ namespace JourneyHub.Api.Migrations
                     b.Property<double>("Duration")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("MapMarkers")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MapPoints")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("RouteDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RouteName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -286,8 +282,68 @@ namespace JourneyHub.Api.Migrations
                                 .HasForeignKey("TripId");
                         });
 
+                    b.OwnsMany("JourneyHub.Common.Models.Dtos.Requests.MapPoint", "MapMarkers", b1 =>
+                        {
+                            b1.Property<int>("TripId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<double>("Lat")
+                                .HasColumnType("double precision");
+
+                            b1.Property<double>("Lng")
+                                .HasColumnType("double precision");
+
+                            b1.Property<int>("Order")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("TripId", "Id");
+
+                            b1.ToTable("Trips_MapMarkers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TripId");
+                        });
+
+                    b.OwnsMany("JourneyHub.Common.Models.Dtos.Requests.MapPoint", "MapPoints", b1 =>
+                        {
+                            b1.Property<int>("TripId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<double>("Lat")
+                                .HasColumnType("double precision");
+
+                            b1.Property<double>("Lng")
+                                .HasColumnType("double precision");
+
+                            b1.Property<int>("Order")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("TripId", "Id");
+
+                            b1.ToTable("Trips_MapPoints");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TripId");
+                        });
+
                     b.Navigation("Area")
                         .IsRequired();
+
+                    b.Navigation("MapMarkers");
+
+                    b.Navigation("MapPoints");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

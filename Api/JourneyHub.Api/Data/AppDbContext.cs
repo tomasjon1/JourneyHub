@@ -12,13 +12,14 @@ namespace JourneyHub.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); 
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Trip>(entity =>
             {
                 entity.OwnsOne(t => t.Area);
                 entity.OwnsMany(t => t.MapPoints);
-                entity.OwnsMany(t => t.MapMarkers); 
+                entity.OwnsMany(t => t.MapMarkers);
+
             });
         }
     }

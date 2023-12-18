@@ -8,5 +8,6 @@
         public const string Username_Taken = "Username already taken";
         public const string Email_Exists = "Email already exists";
         public const string Passwords_Do_Not_Match = "Passwords do not match";
+        public const string Unauthorized_Trip_Deletion = "User is not authorized to delete this trip";
     }
 }

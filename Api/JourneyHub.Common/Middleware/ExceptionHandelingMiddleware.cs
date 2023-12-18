@@ -29,6 +29,10 @@ namespace JourneyHub.Common.Middleware
                         statusCode = (int)HttpStatusCode.UnprocessableEntity;
                         message = autoMapperMappingException.Message;
                         break;
+                    case UnauthorizedException unauthorizedAccessException:
+                        statusCode = unauthorizedAccessException.StatusCode;
+                        message = unauthorizedAccessException.Message;
+                        break;
                     default:
                         statusCode = (int)HttpStatusCode.InternalServerError;
                         message = exception.Message;
