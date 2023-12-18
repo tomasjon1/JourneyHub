@@ -6,6 +6,23 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+public class PagedResponse<T> : GenericResponse<T>
+{
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+
+    public PagedResponse(T data, int currentPage, int pageSize, int totalCount) : base(data)
+    {
+        this.CurrentPage = currentPage;
+        this.PageSize = pageSize;
+        this.TotalCount = totalCount;
+        this.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+    }
+}
+
+
 namespace JourneyHub.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -29,10 +46,11 @@ namespace JourneyHub.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTripsAsync()
+        public async Task<IActionResult> GetAllTripsAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var trips = await _tripService.GetAllTripsAsync();
-            return Ok(new GenericResponse<IEnumerable<Trip>>(trips));
+            var (trips, totalCount) = await _tripService.GetTripsPagedAsync(pageNumber, pageSize);
+            var response = new PagedResponse<IEnumerable<Trip>>(trips, pageNumber, pageSize, totalCount);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
