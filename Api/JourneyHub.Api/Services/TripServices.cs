@@ -33,7 +33,19 @@ namespace JourneyHub.Api.Services
 
         public async Task<IEnumerable<Trip>> GetAllTripsAsync()
         {
-            return await _context.Trips.ToListAsync();
+            return await _context.Trips
+                                .AsNoTracking()
+                                .Select(trip => new Trip
+                                {
+                                    Id = trip.Id,
+                                    RouteName = trip.RouteName,
+                                    RouteDescription = trip.RouteDescription,
+                                    Visibility = trip.Visibility,
+                                    Distance = trip.Distance,
+                                    Duration = trip.Duration,
+                                    Area = trip.Area
+                                })
+                                .ToListAsync();
         }
 
         public async Task<Trip> GetTripByIdAsync(int id)
