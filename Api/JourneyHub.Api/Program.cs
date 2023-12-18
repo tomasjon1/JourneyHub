@@ -52,6 +52,7 @@ namespace JourneyHub
 
             builder.Services.AddScoped<ITripServices, TripServices>();
             builder.Services.AddScoped<IUserService, UsersService>();
+            builder.Services.AddScoped<ITripRatingService, TripRatingService>();
 
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

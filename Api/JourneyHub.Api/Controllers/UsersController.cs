@@ -2,7 +2,6 @@
 using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Common.Models.Dtos.Responses;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -44,8 +43,8 @@ namespace JourneyHub.Api.Controllers
 
             return Ok(new GenericResponse<GetUserInfoDto>(new GetUserInfoDto
                 {
-                    UserName = user.UserName,
-                    Email = user.Email
+                    UserName = updatedUser.UserName,
+                    Email = updatedUser.Email
                 }
             ));
         }

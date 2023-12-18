@@ -22,7 +22,6 @@ public class PagedResponse<T> : GenericResponse<T>
     }
 }
 
-
 namespace JourneyHub.Api.Controllers
 {
     [Route("api/[controller]")]

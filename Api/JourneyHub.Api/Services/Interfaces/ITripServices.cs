@@ -10,7 +10,6 @@ namespace JourneyHub.Api.Services.Interfaces
         Task<IEnumerable<Trip>> GetAllTripsAsync();
         Task<Trip> GetTripByIdAsync(int id);
         Task<bool> DeleteTripAsync(int id, string userId);
-        //Task<Trip> UpdateTripAsync(int id, PostTripRequestDto tripDto);
         Task<AreaInfo> getAreaByCoordinatesAsync(MapPoint mapPoint);
         Task<(IEnumerable<Trip>, int)> GetTripsPagedAsync(int pageNumber, int pageSize);
     }

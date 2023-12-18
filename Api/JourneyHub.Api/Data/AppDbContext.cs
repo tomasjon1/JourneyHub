@@ -7,6 +7,7 @@ namespace JourneyHub.Data
     public class AppDbContext : IdentityDbContext
     {
         public DbSet<Trip>? Trips { get; set; }
+        public DbSet<TripRating>? TripRatings { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -19,7 +20,6 @@ namespace JourneyHub.Data
                 entity.OwnsOne(t => t.Area);
                 entity.OwnsMany(t => t.MapPoints);
                 entity.OwnsMany(t => t.MapMarkers);
-
             });
         }
     }

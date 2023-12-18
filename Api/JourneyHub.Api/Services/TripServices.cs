@@ -87,22 +87,6 @@ namespace JourneyHub.Api.Services
             return true;
         }
 
-        //public async Task<Trip> UpdateTripAsync(int id, PostTripRequestDto tripDto)
-        //{
-        //    var trip = await _context.Trips.FindAsync(id);
-        //    if (trip == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    _mapper.Map(tripDto, trip);
-
-        //    _context.Trips.Update(trip);
-        //    await _context.SaveChangesAsync();
-
-        //    return trip;
-        //}
-
         public async Task<AreaInfo> getAreaByCoordinatesAsync(MapPoint MapPoint)
         {
             string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Lat.ToString() + "&lon=" + MapPoint.Lng.ToString() + "&format=json";
