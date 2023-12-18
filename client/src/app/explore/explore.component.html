@@ -1,0 +1,37 @@
+<div class="max-w-5xl m-auto mt-20">
+  <ng-container *ngIf="trailItems$ | async as trailItems; else loading">
+    <div class="flex flex-col gap-20">
+      <div class="text-center flex flex-col gap-10">
+        <h1 class="text-4xl font-semibold">Find your next journey</h1>
+        <span class="text-xl"
+          >Discover the beauty of the great outdoors through the lenses of top
+          explorers Craving more wilderness? Delve into our extensive repository
+          of trails and find your next journey...</span
+        >
+      </div>
+      <div
+        class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 mb-20"
+        *ngIf="trailItems.data.length; else noTrail"
+      >
+        <app-trail-item
+          *ngFor="let trailItem of trailItems.data"
+          [trailItem]="trailItem"
+        ></app-trail-item>
+      </div>
+    </div>
+    <ng-template #noTrail>
+      <div
+        class="bg-red-200 rounded-xl border-red-700 border-2 text-center text-lg font-semibold w-full p-3"
+      >
+        No trails found!
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="mb-6">
+      <!-- <app-loader></app-loader> -->
+      loading
+    </div>
+  </ng-template>
+</div>

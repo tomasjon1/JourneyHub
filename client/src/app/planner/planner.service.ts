@@ -2,8 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { LatLng, Marker } from 'leaflet';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { User } from '../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -51,5 +49,9 @@ export class PlannerService {
     };
 
     return this._http.post(`${this.apiUrl}/api/Trips`, form, httpOptions);
+  }
+
+  public getTrails(): any {
+    return this._http.get(`${this.apiUrl}/api/Trips`);
   }
 }

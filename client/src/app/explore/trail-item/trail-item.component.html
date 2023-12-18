@@ -1,0 +1,22 @@
+<div class="flex flex-col gap-4">
+  <div class="bg-slate-200 rounded-md h-48 w-full">
+    <img src="" alt="" />
+  </div>
+  <div class="flex flex-col gap-1">
+    <h4 class="font-semibold">{{ trailItem.routeName }}</h4>
+    <h5>
+      <span *ngIf="trailItem.area.city">{{ trailItem.area.city }}, </span>
+      {{ trailItem.area.country }}
+    </h5>
+    <div class="flex gap-4 text-light-800 font-semibold1">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-up-right-and-down-left-from-center fa-sm"></i>
+        {{ trailItem.distance | distanceConverter }}
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-regular fa-clock fa-sm"></i>
+        {{ trailItem.duration | durationConverter }}
+      </div>
+    </div>
+  </div>
+</div>

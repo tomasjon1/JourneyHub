@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { SimpleMapScreenshoter } from 'leaflet-simple-map-screenshoter';
+import * as FileSaver from 'file-saver';
 import {
   LatLng,
   MapOptions,
@@ -104,6 +106,39 @@ export class PlannerComponent implements OnInit {
     this.markers.forEach((marker) => {
       marker.on('click', (e) => this.onMarkerClick(e, marker));
     });
+    // let simpleMapScreenshoter = new SimpleMapScreenshoter().addTo(this.map);
+
+    // let pluginOptions = {
+    //   cropImageByInnerWH: true, // crop blank opacity from image borders
+    //   hidden: false, // hide screen icon
+    //   preventDownload: false, // prevent download on button click
+    //   domtoimageOptions: {}, // see options for dom-to-image
+    //   position: 'topleft', // position of take screen icon
+    //   screenName: 'screen', // string or function
+    //   hideElementsWithSelectors: ['.leaflet-control-container'], // by default hide map controls All els must be child of _map._container
+    //   mimeType: 'image/png', // used if format == image,
+    //   caption: null, // string or function, added caption to bottom of screen
+    //   captionFontSize: 15,
+    //   captionFont: 'Arial',
+    //   captionColor: 'black',
+    //   captionBgColor: 'white',
+    //   captionOffset: 5,
+    // };
+
+    // let format = 'blob'; // 'image' - return base64, 'canvas' - return canvas
+    // let overridedPluginOptions = {
+    //   mimeType: 'image/jpeg',
+    // };
+
+    // simpleMapScreenshoter
+    //   .takeScreen('blob', overridedPluginOptions)
+    //   .then((blob) => {
+    //     alert('done');
+    //     // FileSaver.saveAs(blob, 'screen.png');
+    //   })
+    //   .catch((e) => {
+    //     console.error(e);
+    //   });
   }
 
   startIcon = new Icon({

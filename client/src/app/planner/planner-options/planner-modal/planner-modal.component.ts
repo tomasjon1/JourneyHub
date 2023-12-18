@@ -22,6 +22,8 @@ import { PlannerService } from '../../planner.service';
 export class PlannerModalComponent {
   @Input() routeCoordinates: any;
   @Input() markers: any;
+  @Input() distance: number = 0;
+  @Input() duration: number = 0;
 
   showModal = false;
   currentPage = 1;
@@ -121,6 +123,8 @@ export class PlannerModalComponent {
       ...this.saveRouteForm.value,
       mapPoints: this.routeCoordinates,
       mapMarkers: markerCoords,
+      distance: this.distance,
+      duration: this.duration,
     };
     console.log(formData);
     this._plannerService.saveTrail(formData).subscribe({
