@@ -35,6 +35,16 @@ namespace JourneyHub.Api.Services
             return trip;
         }
 
+        public async Task<(IEnumerable<Trip>, int)> GetTripsPagedAsync(int pageNumber, int pageSize)
+        {
+            var totalTrips = await _context.Trips.CountAsync();
+            var trips = await _context.Trips
+                                    .Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToListAsync();
+            return (trips, totalTrips);
+        }
+
         public async Task<IEnumerable<Trip>> GetAllTripsAsync()
         {
             return await _context.Trips

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PlannerService {
   private osrmApiUrl = 'https://routing.openstreetmap.de/routed-foot/route/v1';
-  apiUrl: string = 'http://localhost:5000';
+  apiUrl: string = 'https://localhost:5001';
 
   private _http = inject(HttpClient);
 
@@ -51,8 +51,16 @@ export class PlannerService {
     return this._http.post(`${this.apiUrl}/api/Trips`, form, httpOptions);
   }
 
-  public getTrails(): any {
-    return this._http.get(`${this.apiUrl}/api/Trips`);
+  public getTrails(
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<any> {
+    return this._http.get(`${this.apiUrl}/api/Trips`, {
+      params: {
+        pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 
   public getTrail(trailId: string): any {
