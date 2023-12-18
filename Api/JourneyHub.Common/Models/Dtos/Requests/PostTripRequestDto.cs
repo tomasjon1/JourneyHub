@@ -13,6 +13,7 @@ namespace JourneyHub.Common.Models.Dtos.Requests
     }
     public class MapPoint
     {
+        public int Order {get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
     }
