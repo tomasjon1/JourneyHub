@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PlannerService {
   private osrmApiUrl = 'https://routing.openstreetmap.de/routed-foot/route/v1';
-  apiUrl: string = 'http://localhost:5000';
+  apiUrl: string = 'https://localhost:5001';
 
   private _http = inject(HttpClient);
 
