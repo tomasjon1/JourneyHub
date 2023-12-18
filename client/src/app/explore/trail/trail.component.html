@@ -1,1 +1,71 @@
-trail page
+<div class="max-w-5xl m-auto flex flex-col gap-10 mt-10">
+  <div class="text-center flex flex-col gap-5">
+    <h1 class="text-4xl font-semibold">{{ trail.routeName }}</h1>
+  </div>
+  <div class="flex flex-col gap-3">
+    <h2 class="text-2xl font-semibold">Trail route</h2>
+    <div class="w-full h-96 flex gap-5">
+      <div class="w-full h-96 relative group">
+        <div
+          class="absolute cursor-pointer w-full h-full bg-dark-900 bg-opacity-30 transition-colors z-10 rounded-md hidden group-hover:flex justify-center items-center"
+        >
+          <button
+            class="cursor-pointer w-fit flex text-center bg-white p-3 rounded-md !z-30 font-semibold shadow-xl hover:bg-light-500 transition-colors"
+            (click)="toggleMapExpansion()"
+          >
+            Click to expand
+          </button>
+        </div>
+        <div
+          class="rounded-md h-full md:h-full w-full !z-0"
+          leaflet
+          [leafletOptions]="mapOptions"
+          (leafletMapReady)="onMapReady($event)"
+        ></div>
+      </div>
+      <div class="flex flex-col justify-between gap-5">
+        <span
+          class="bg-light-500 rounded-md h-full w-44 flex flex-col gap-2 justify-center items-center"
+        >
+          <span class="text-xl">Distance</span>
+          <span class="text-2xl font-semibold">{{
+            trail.distance | distanceConverter
+          }}</span>
+        </span>
+        <span
+          class="bg-light-500 rounded-md h-full w-44 flex flex-col gap-2 justify-center items-center"
+        >
+          <span class="text-xl">Duration</span>
+          <span class="text-2xl font-semibold"
+            >~ {{ trail.duration | durationConverter }}</span
+          >
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="expandView"
+  class="top-5 left-10 right-10 bottom-10 absolute z-30 flex flex-col gap-5 items-center"
+>
+  <span
+    class="cursor-pointer w-fit flex text-center bg-white p-3 rounded-md !z-30 font-semibold shadow-xl hover:bg-light-500 transition-colors"
+    (click)="toggleMapExpansion()"
+  >
+    Click here to close the map
+  </span>
+  <div
+    class="rounded-md h-full w-full !z-30"
+    leaflet
+    [leafletOptions]="mapOptions"
+    (leafletMapReady)="onExpandedMapReady($event)"
+  ></div>
+</div>
+
+<div
+  *ngIf="expandView"
+  (click)="toggleMapExpansion()"
+  class="opacity-50 fixed inset-0 z-20 bg-black"
+></div>
+<app-footer></app-footer>

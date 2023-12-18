@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using JourneyHub.Api.Services.Interfaces;
+using JourneyHub.Common.Constants;
 using JourneyHub.Common.Models.Domain;
 using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using JourneyHub.Common.Exceptions;
 
 namespace JourneyHub.Api.Services
 {
@@ -20,15 +22,27 @@ namespace JourneyHub.Api.Services
             _mapper = mapper;
         }
 
-        public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto)
+        public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
         {
             Trip trip = _mapper.Map<Trip>(tripDto);
+
+            trip.UserId = userId;
 
             trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
             _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
 
             return trip;
+        }
+
+        public async Task<(IEnumerable<Trip>, int)> GetTripsPagedAsync(int pageNumber, int pageSize)
+        {
+            var totalTrips = await _context.Trips.CountAsync();
+            var trips = await _context.Trips
+                                    .Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToListAsync();
+            return (trips, totalTrips);
         }
 
         public async Task<IEnumerable<Trip>> GetAllTripsAsync()
@@ -53,12 +67,18 @@ namespace JourneyHub.Api.Services
             return await _context.Trips.FindAsync(id);
         }
 
-        public async Task<bool> DeleteTripAsync(int id)
+        public async Task<bool> DeleteTripAsync(int id, string userId)
         {
             var trip = await _context.Trips.FindAsync(id);
+
             if (trip == null)
             {
                 return false;
+            }
+
+            if (trip.UserId != userId)
+            {
+                throw new UnauthorizedException(ErrorMessages.Unauthorized_Trip_Deletion, 403);
             }
 
             _context.Trips.Remove(trip);

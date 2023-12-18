@@ -36,7 +36,7 @@ export const validationMessages = {
     name: {
       required: 'Trail name is required.',
       minlength: 'Trail name must be at least 4 characters long.',
-      maxlength: 'Trail name cannot be more than 16 characters long.',
+      maxlength: 'Trail name cannot be more than 30 characters long.',
     },
   },
 };

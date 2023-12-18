@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { InputComponent } from 'src/app/input/input.component';
 import { validationMessages } from 'src/app/shared/content/validation-messages';
 import { PlannerService } from '../../planner.service';
+import { LatLng } from 'leaflet';
 
 @Component({
   standalone: true,
@@ -20,7 +21,7 @@ import { PlannerService } from '../../planner.service';
   imports: [CommonModule, InputComponent, ReactiveFormsModule, FormsModule],
 })
 export class PlannerModalComponent {
-  @Input() routeCoordinates: any;
+  @Input() routeCoordinates: LatLng[] = [];
   @Input() markers: any;
   @Input() distance: number = 0;
   @Input() duration: number = 0;
@@ -62,7 +63,7 @@ export class PlannerModalComponent {
         [
           Validators.required,
           Validators.minLength(4),
-          Validators.maxLength(16),
+          Validators.maxLength(30),
         ],
       ],
       routeDescription: [this.defaultState.routeDescription],
@@ -107,6 +108,7 @@ export class PlannerModalComponent {
   }
 
   onSubmit() {
+    console.log(this.routeCoordinates);
     if (this.saveRouteForm.invalid) {
       Object.keys(this.saveRouteForm.controls).forEach((field) => {
         const control = this.saveRouteForm.get(field);
@@ -118,10 +120,15 @@ export class PlannerModalComponent {
     const markerCoords = this._plannerService.extractCoordsFromMarkers(
       this.markers
     );
-    console.log('markers', markerCoords);
+
+    const coordinates = this.routeCoordinates.map((location, index) => ({
+      order: index,
+      ...location,
+    }));
+
     const formData = {
       ...this.saveRouteForm.value,
-      mapPoints: this.routeCoordinates,
+      mapPoints: coordinates,
       mapMarkers: markerCoords,
       distance: this.distance,
       duration: this.duration,
@@ -130,7 +137,7 @@ export class PlannerModalComponent {
     this._plannerService.saveTrail(formData).subscribe({
       next: (response: any) => {
         this._toastrService.success('', 'Trail created successfully'),
-          this._router.navigate(['/explore']);
+          this._router.navigate(['/trail', response.data.id]);
       },
       error: (error: any) => {
         console.log(error);

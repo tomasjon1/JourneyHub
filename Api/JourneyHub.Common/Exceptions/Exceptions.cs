@@ -10,4 +10,18 @@
             StatusCode = statusCode;
         }
     }
+
+    public class UnauthorizedException : Exception
+    {
+        public int StatusCode { get; set; }
+
+        public UnauthorizedException() { }
+
+        public UnauthorizedException(string message) : base(message) { }
+
+        public UnauthorizedException(string message, int statusCode) : base(message)
+        {
+            StatusCode = statusCode;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { DistanceConverterPipe } from 'src/app/shared/pipes/distance-converter.pipe';
 import { DurationConverterPipe } from 'src/app/shared/pipes/duration-converter.pipe';
 
@@ -9,10 +10,12 @@ import { DurationConverterPipe } from 'src/app/shared/pipes/duration-converter.p
   templateUrl: './trail-item.component.html',
   imports: [CommonModule, DistanceConverterPipe, DurationConverterPipe],
 })
-export class TrailItemComponent implements OnInit {
+export class TrailItemComponent {
   @Input() trailItem: any;
 
-  ngOnInit(): void {
-    console.log(this.trailItem);
+  private _router = inject(Router);
+
+  openTrail(trailId: string) {
+    this._router.navigate(['/trail', trailId]);
   }
 }

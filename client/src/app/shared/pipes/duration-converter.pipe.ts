@@ -11,16 +11,21 @@ export class DurationConverterPipe implements PipeTransform {
       return '';
     }
 
-    const totalMinutes = value / 60;
-    const totalHours = value / 3600;
-    const totalDays = value / 86400;
+    const days = Math.floor(value / 86400);
+    const hours = Math.floor((value % 86400) / 3600);
+    const minutes = Math.round(((value % 86400) % 3600) / 60);
 
-    if (totalDays >= 1) {
-      return `${totalDays.toFixed(1)} d`;
-    } else if (totalHours >= 1) {
-      return `${totalHours.toFixed(1)} h`;
-    } else {
-      return `${totalMinutes.toFixed(1)} m`;
+    let result = '';
+    if (days > 0) {
+      result += `${days} d `;
     }
+    if (hours > 0 || days > 0) {
+      result += `${hours} h `;
+    }
+    if (minutes > 0 || hours > 0 || days > 0) {
+      result += `${minutes} m`;
+    }
+
+    return result ? result.trim() : '0.0 m';
   }
 }

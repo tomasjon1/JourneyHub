@@ -2,7 +2,26 @@
 using JourneyHub.Common.Models.Domain;
 using JourneyHub.Common.Models.Dtos.Requests;
 using JourneyHub.Common.Models.Dtos.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+public class PagedResponse<T> : GenericResponse<T>
+{
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+
+    public PagedResponse(T data, int currentPage, int pageSize, int totalCount) : base(data)
+    {
+        this.CurrentPage = currentPage;
+        this.PageSize = pageSize;
+        this.TotalCount = totalCount;
+        this.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+    }
+}
+
 
 namespace JourneyHub.Api.Controllers
 {
@@ -18,17 +37,20 @@ namespace JourneyHub.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTripAsync([FromBody] PostTripRequestDto tripDto)
         {
-            Trip trip = await _tripService.CreateTripAsync(tripDto);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Trip trip = await _tripService.CreateTripAsync(tripDto, userId);
             return Ok(new GenericResponse<Trip>(trip));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTripsAsync()
+        public async Task<IActionResult> GetAllTripsAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var trips = await _tripService.GetAllTripsAsync();
-            return Ok(new GenericResponse<IEnumerable<Trip>>(trips));
+            var (trips, totalCount) = await _tripService.GetTripsPagedAsync(pageNumber, pageSize);
+            var response = new PagedResponse<IEnumerable<Trip>>(trips, pageNumber, pageSize, totalCount);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -44,9 +66,12 @@ namespace JourneyHub.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTripAsync(int id)
         {
-            var result = await _tripService.DeleteTripAsync(id);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = await _tripService.DeleteTripAsync(id, userId);
             if (!result)
             {
                 return NotFound();
@@ -54,17 +79,5 @@ namespace JourneyHub.Api.Controllers
 
             return Ok();
         }
-
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateTripAsync(int id, [FromBody] PostTripRequestDto tripDto)
-        //{
-        //    var updatedTrip = await _tripService.UpdateTripAsync(id, tripDto);
-        //    if (updatedTrip == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(new GenericResponse<Trip>(updatedTrip));
-        //}
     }
 }
