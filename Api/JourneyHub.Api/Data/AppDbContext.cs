@@ -17,6 +17,8 @@ namespace JourneyHub.Data
             modelBuilder.Entity<Trip>(entity =>
             {
                 entity.OwnsOne(t => t.Area);
+                entity.OwnsMany(t => t.MapPoints);
+                entity.OwnsMany(t => t.MapMarkers); 
             });
         }
     }
