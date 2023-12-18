@@ -51,8 +51,16 @@ export class PlannerService {
     return this._http.post(`${this.apiUrl}/api/Trips`, form, httpOptions);
   }
 
-  public getTrails(): any {
-    return this._http.get(`${this.apiUrl}/api/Trips`);
+  public getTrails(
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<any> {
+    return this._http.get(`${this.apiUrl}/api/Trips`, {
+      params: {
+        pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 
   public getTrail(trailId: string): any {

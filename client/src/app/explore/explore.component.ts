@@ -24,10 +24,27 @@ interface MapPoint {
   imports: [CommonModule, TrailItemComponent],
 })
 export class ExploreComponent implements OnInit {
-  private _plannerService = inject(PlannerService);
-  public trailItems$?: Observable<Trail[]>;
+  trails: Trail[] = [];
+  currentPage: number = 1;
+  totalTrails: number = 0;
+  isLoading: boolean = false;
+
+  constructor(private plannerService: PlannerService) {}
 
   ngOnInit(): void {
-    this.trailItems$ = this._plannerService.getTrails();
+    this.loadMoreTrails();
+  }
+
+  loadMoreTrails(): void {
+    this.isLoading = true;
+    const pageSize = 12; // Set page size to 12
+    this.plannerService
+      .getTrails(this.currentPage, pageSize)
+      .subscribe((response) => {
+        this.trails.push(...response.data);
+        this.totalTrails = response.totalCount;
+        this.currentPage++;
+        this.isLoading = false;
+      });
   }
 }
