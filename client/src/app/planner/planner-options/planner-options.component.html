@@ -14,7 +14,7 @@
       <h2 class="text-xl font-semibold">Mode</h2>
       <div class="flex gap-3">
         <button
-          class="border-2 border-light-700 text-sm w-36 py-3 rounded-md flex flex-col"
+          class="border-2 border-light-700 text-sm w-36 py-3 rounded-md flex flex-col items-center justify-center"
           [ngClass]="{
             '!border-dark-900': isAddMode,
             'mode-button': !isAddMode
@@ -27,7 +27,7 @@
           <span class="font-semibold">Planning mode</span>
         </button>
         <button
-          class="border-2 border-light-700 text-sm w-36 py-3 rounded-md flex flex-col"
+          class="border-2 border-light-700 text-sm w-36 py-3 rounded-md flex flex-col items-center justify-center"
           [ngClass]="{
             '!border-dark-900': !isAddMode,
             'mode-button': isAddMode

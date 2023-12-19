@@ -47,6 +47,7 @@ export class PlannerComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeMapOptions();
+    this.requestLocation();
   }
 
   toggleMode(isAddMode: boolean): void {
@@ -78,39 +79,6 @@ export class PlannerComponent implements OnInit {
     });
 
     this.updatePolylineDecorator();
-    // let simpleMapScreenshoter = new SimpleMapScreenshoter().addTo(this.map);
-
-    // let pluginOptions = {
-    //   cropImageByInnerWH: true, // crop blank opacity from image borders
-    //   hidden: false, // hide screen icon
-    //   preventDownload: false, // prevent download on button click
-    //   domtoimageOptions: {}, // see options for dom-to-image
-    //   position: 'topleft', // position of take screen icon
-    //   screenName: 'screen', // string or function
-    //   hideElementsWithSelectors: ['.leaflet-control-container'], // by default hide map controls All els must be child of _map._container
-    //   mimeType: 'image/png', // used if format == image,
-    //   caption: null, // string or function, added caption to bottom of screen
-    //   captionFontSize: 15,
-    //   captionFont: 'Arial',
-    //   captionColor: 'black',
-    //   captionBgColor: 'white',
-    //   captionOffset: 5,
-    // };
-
-    // let format = 'blob'; // 'image' - return base64, 'canvas' - return canvas
-    // let overridedPluginOptions = {
-    //   mimeType: 'image/jpeg',
-    // };
-
-    // simpleMapScreenshoter
-    //   .takeScreen('blob', overridedPluginOptions)
-    //   .then((blob) => {
-    //     alert('done');
-    //     // FileSaver.saveAs(blob, 'screen.png');
-    //   })
-    //   .catch((e) => {
-    //     console.error(e);
-    //   });
   }
 
   startIcon = new Icon({
@@ -244,6 +212,30 @@ export class PlannerComponent implements OnInit {
     this.waypoints[index] = movedMarker.getLatLng();
 
     this.updateRoute();
+  }
+
+  private requestLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const coords = latLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          this.mapOptions.center = coords; // Update the map's center
+
+          // If the map is already initialized, set its center directly
+          if (this.map) {
+            this.map.setView(coords, this.map.getZoom());
+          }
+        },
+        () => {
+          console.log('Location access denied by user');
+        }
+      );
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    }
   }
 
   private updateRoute(): void {
