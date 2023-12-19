@@ -24,7 +24,6 @@ namespace JourneyHub.Api.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Check if userId is null
             if (string.IsNullOrEmpty(userId))
             {
                 return BadRequest("User ID is missing or invalid.");
@@ -32,7 +31,6 @@ namespace JourneyHub.Api.Controllers
 
             var user = await _userService.GetUserByIdAsync(userId);
 
-            // Check if user is null
             if (user == null)
             {
                 return NotFound("User not found.");
@@ -50,8 +48,6 @@ namespace JourneyHub.Api.Controllers
         public async Task<IActionResult> RemoveCurrentUser()
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Optional: Add additional authorization checks here if needed
 
             var result = await _userService.DeleteCurrentUserAsync(currentUserId);
 
@@ -92,7 +88,6 @@ namespace JourneyHub.Api.Controllers
 
             var isPasswordCorrect = await _userService.VerifyUserPasswordAsync(userId, passwordDto.Password);
 
-            // Return the boolean value directly
             return Ok(isPasswordCorrect);
         }
     }

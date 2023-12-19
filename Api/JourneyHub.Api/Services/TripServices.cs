@@ -108,6 +108,13 @@ namespace JourneyHub.Api.Services
             return true;
         }
 
+        public async Task DeleteAllTripsByUserIdAsync(string userId)
+        {
+            var userTrips = _context.Trips.Where(t => t.UserId == userId).ToList();
+            _context.Trips.RemoveRange(userTrips);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<AreaInfo> getAreaByCoordinatesAsync(MapPoint MapPoint)
         {
             string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Lat.ToString() + "&lon=" +

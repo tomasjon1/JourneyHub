@@ -9,10 +9,12 @@ namespace JourneyHub.Api.Services
     public class UsersService : IUserService
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITripServices _tripServices;
 
-        public UsersService(UserManager<IdentityUser> userManager)
+        public UsersService(UserManager<IdentityUser> userManager, ITripServices tripServices)
         {
             _userManager = userManager;
+            _tripServices = tripServices;
         }
 
         public async Task<IdentityUser> GetUserByIdAsync(string userId)
@@ -28,6 +30,8 @@ namespace JourneyHub.Api.Services
                 return false;
             }
 
+            await _tripServices.DeleteAllTripsByUserIdAsync(userId);
+
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded;
         }
@@ -36,7 +40,6 @@ namespace JourneyHub.Api.Services
         {
             string emailPattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
 
-            // Update Email
             if (!string.IsNullOrEmpty(userUpdateDto.Email))
             {
                 if (!Regex.IsMatch(userUpdateDto.Email, emailPattern))
@@ -45,7 +48,6 @@ namespace JourneyHub.Api.Services
                 user.Email = userUpdateDto.Email;
             }
 
-            // Update Username
             if (!string.IsNullOrEmpty(userUpdateDto.UserName))
             {
                 var existingUserWithNewUsername = await _userManager.FindByNameAsync(userUpdateDto.UserName);
@@ -55,7 +57,6 @@ namespace JourneyHub.Api.Services
                 user.UserName = userUpdateDto.UserName;
             }
 
-            // Update user and return result
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
                 throw new BadRequestException(updateResult.Errors.FirstOrDefault()?.Description);
