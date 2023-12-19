@@ -1,0 +1,39 @@
+<div class="w-64 m-auto flex flex-col items-center gap-5 mt-10">
+  <h1 class="text-3xl font-semibold">Account details</h1>
+  <span>Logged in as @{{ userDetails.userName }}</span>
+  <hr class="w-64" />
+  <form
+    class="m-auto flex flex-col items-center gap-5"
+    [formGroup]="profileForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <h2 class="font-semibold text-lg">Change Username of Email</h2>
+
+    <app-input
+      [control]="profileForm.controls.name"
+      inputId="name"
+      inputType="text"
+      label="Username"
+    />
+
+    <app-input
+      [control]="profileForm.controls.email"
+      inputId="email"
+      inputType="email"
+      label="Email"
+      [customErrorMessages]="loginValidationMessages.email"
+    />
+
+    <button
+      [disabled]="profileForm.invalid"
+      class="bg-dark-900 w-full hover:bg-opacity-80 transition text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
+    >
+      Save changes
+    </button>
+    <button
+      class="underline hover:opacity-60 transition-opacity text-red-600 text-sm"
+    >
+      I want to delete my account
+    </button>
+  </form>
+</div>
