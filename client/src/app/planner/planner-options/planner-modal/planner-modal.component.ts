@@ -161,6 +161,28 @@ export class PlannerModalComponent {
       return;
     }
 
+    if (this.selectedFiles.length > 0) {
+      // If there are selected files, upload them and then submit the form data
+      const uploadObservables = this.selectedFiles.map((file, index) =>
+        this.uploadToCloudinary(file, `file-${index}-${file.name}`)
+      );
+
+      forkJoin(uploadObservables).subscribe({
+        next: (imageUrls) => {
+          this.submitFormData(imageUrls);
+        },
+        error: (error) => {
+          console.error('Error during image upload:', error);
+          this._toastrService.error('Failed to upload images.');
+        },
+      });
+    } else {
+      // No images to upload, submit form data without image URLs
+      this.submitFormData([]);
+    }
+  }
+
+  private submitFormData(imageUrls: string[]) {
     const markerCoords = this._plannerService.extractCoordsFromMarkers(
       this.markers
     );
@@ -169,38 +191,23 @@ export class PlannerModalComponent {
       ...location,
     }));
 
-    // const uploadScreenshotObservable =
-    //   this.uploadToCloudinary(screenshotFile);
-    const uploadObservables = this.selectedFiles.map((file, index) =>
-      this.uploadToCloudinary(file, `file-${index}-${file.name}`)
-    );
-    // uploadObservables.push(uploadScreenshotObservable);
+    const formData = {
+      ...this.saveRouteForm.value,
+      mapPoints: coordinates,
+      mapMarkers: markerCoords,
+      distance: this.distance,
+      duration: this.duration,
+      images: imageUrls,
+    };
 
-    forkJoin(uploadObservables).subscribe({
-      next: (imageUrls) => {
-        const formData = {
-          ...this.saveRouteForm.value,
-          mapPoints: coordinates,
-          mapMarkers: markerCoords,
-          distance: this.distance,
-          duration: this.duration,
-          images: imageUrls,
-        };
-
-        this._plannerService.saveTrail(formData).subscribe({
-          next: (response: any) => {
-            this._toastrService.success('Trail created successfully');
-            this._router.navigate(['/trail', response.data.id]);
-          },
-          error: (error: any) => {
-            console.error('Error saving trail:', error);
-            this._toastrService.error('Failed to save trail.');
-          },
-        });
+    this._plannerService.saveTrail(formData).subscribe({
+      next: (response: any) => {
+        this._toastrService.success('Trail created successfully');
+        this._router.navigate(['/trail', response.data.id]);
       },
-      error: (error) => {
-        console.error('Error during image upload:', error);
-        this._toastrService.error('Failed to upload images.');
+      error: (error: any) => {
+        console.error('Error saving trail:', error);
+        this._toastrService.error('Failed to save trail.');
       },
     });
   }
