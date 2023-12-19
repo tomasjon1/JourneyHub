@@ -65,7 +65,7 @@ export class PlannerComponent implements OnInit {
           zIndex: 10,
         }),
       ],
-      center: latLng(54.723079, 25.2333521),
+      center: latLng(24.723079, 25.2333521),
     };
   }
 
@@ -215,26 +215,37 @@ export class PlannerComponent implements OnInit {
   }
 
   private requestLocation(): void {
-    if (navigator.geolocation) {
+    const storedCoords = localStorage.getItem('mapCoords');
+    if (storedCoords) {
+      const coords = JSON.parse(storedCoords);
+      this.setMapCenter(latLng(coords.lat, coords.lng));
+    } else if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const coords = latLng(
             position.coords.latitude,
             position.coords.longitude
           );
-          this.mapOptions.center = coords; // Update the map's center
+          localStorage.setItem('mapCoords', JSON.stringify(coords));
 
-          // If the map is already initialized, set its center directly
-          if (this.map) {
-            this.map.setView(coords, this.map.getZoom());
-          }
+          this.setMapCenter(coords);
         },
         () => {
           console.log('Location access denied by user');
+          this.setMapCenter(latLng(0, 0));
         }
       );
     } else {
       console.log('Geolocation is not supported by this browser.');
+      this.setMapCenter(latLng(0, 0));
+    }
+  }
+
+  private setMapCenter(coords: LatLng): void {
+    this.mapOptions.center = coords;
+
+    if (this.map) {
+      this.map.setView(coords, this.map.getZoom());
     }
   }
 
