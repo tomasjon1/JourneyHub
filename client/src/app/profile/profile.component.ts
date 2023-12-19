@@ -10,12 +10,13 @@ import {
 import { InputComponent } from '../input/input.component';
 import { ToastrService } from 'ngx-toastr';
 import { validationMessages } from '../shared/content/validation-messages';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  imports: [ReactiveFormsModule, FormsModule, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, InputComponent],
 })
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
@@ -24,12 +25,13 @@ export class ProfileComponent implements OnInit {
   constructor() {
     this.profileForm = this._formBuilder.group({
       email: [this.defaultState.email, [Validators.required, Validators.email]],
-      userName: [this.defaultState.userName, [Validators.required]],
-      newPassword: [this.defaultState.newPassword, [Validators.required]],
-      confirmNewPassword: [
-        this.defaultState.confirmNewPassword,
+      userName: [this.defaultState.userName],
+      newPassword: [this.defaultState.newPassword],
+      currentPassword: [
+        this.defaultState.currentPassword,
         [Validators.required],
       ],
+      confirmNewPassword: [this.defaultState.confirmNewPassword],
     });
   }
 
@@ -47,6 +49,7 @@ export class ProfileComponent implements OnInit {
     userName: '',
     newPassword: '',
     confirmNewPassword: '',
+    currentPassword: '',
   };
 
   userDetails: any;
@@ -58,12 +61,21 @@ export class ProfileComponent implements OnInit {
         this.profileForm.patchValue({
           email: this.userDetails.email,
           userName: this.userDetails.userName,
-          newPassword: this.userDetails.newPassword,
-          confirmNewPassword: this.userDetails.confirmNewPassword,
         });
       },
       error: (error: any) => {},
     });
+  }
+
+  onConfirmRemove() {
+    this.onApplyChanges();
+    this.showModal = false;
+  }
+
+  onApplyChanges() {}
+
+  onCancelRemove() {
+    this.showModal = false;
   }
 
   onSubmit() {
@@ -75,13 +87,14 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    // this._authService.login(this.signInForm.value).subscribe({
-    //   next: (response: any) => {
-    //     this._router.navigate(['/explore']);
-    //   },
-    //   error: (error: any) => {
-    //     this._toastrService.error('', error.error.Error.Message);
-    //   },
-    // });
+    this._profileService.updateUserProfile(this.profileForm.value).subscribe({
+      next: (response: any) => {
+        this._toastrService.success('Profile updated successfully');
+      },
+      error: (error: any) => {
+        console.error('Error saving trail:', error);
+        this._toastrService.error('Failed to update profile');
+      },
+    });
   }
 }

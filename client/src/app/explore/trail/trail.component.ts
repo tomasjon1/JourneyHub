@@ -22,6 +22,7 @@ import 'leaflet-polylinedecorator';
 import { PolylineDecorator } from 'leaflet';
 import { FooterComponent } from 'src/app/footer/footer.component';
 import { ToastrService } from 'ngx-toastr';
+import { ProfileService } from 'src/app/profile/profile.service';
 
 interface Location {
   order?: number;
@@ -56,9 +57,11 @@ export class TrailComponent implements OnInit {
   mapInitialized = false;
   expandView = false;
   showModal = false;
+  isAuthor = false;
 
   private _toastrService = inject(ToastrService);
   private _router = inject(Router);
+  private _profileService = inject(ProfileService);
 
   toggleMapExpansion() {
     this.expandView = !this.expandView;
@@ -100,13 +103,18 @@ export class TrailComponent implements OnInit {
 
   ngOnInit(): void {
     const trailId = this._route.snapshot.paramMap.get('id');
-    // this.initializeMapOptions({ lng: 54.723079, lat: 25.2333521 });
+
+    const userData: {
+      userId: string;
+    } = JSON.parse(localStorage.getItem('userData') || '{}');
 
     if (trailId)
       this._plannerService.getTrail(trailId).subscribe({
         next: (response: any) => {
           this.trail = response.data;
           if (this.trail.mapPoints) {
+            console.log(this.trail.userId, response.data.userId);
+            if (this.trail.userId === userData.userId) this.isAuthor = true;
             const firstPoint = this.trail.mapPoints[0];
             const midpoint = this.getMidpoint(this.trail.mapPoints);
             this.initializeMapOptions(midpoint, this.trail.mapPoints.length);

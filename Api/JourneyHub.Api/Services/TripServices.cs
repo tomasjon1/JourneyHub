@@ -52,7 +52,7 @@ namespace JourneyHub.Api.Services
                                     Area = trip.Area,
                                     Distance = trip.Distance,
                                     Duration = trip.Duration,
-                                    Images = trip.Images
+                                    Images = trip.Images,
                                 })
                                .ToListAsync();
 
@@ -75,7 +75,7 @@ namespace JourneyHub.Api.Services
                                     Area = trip.Area,
                                     Distance = trip.Distance,
                                     Duration = trip.Duration,
-                                    Images = trip.Images
+                                    Images = trip.Images,
                                 })
                                 .ToListAsync();
             return (trips, totalTrips);

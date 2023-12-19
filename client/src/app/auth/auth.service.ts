@@ -17,10 +17,11 @@ export class AuthService {
   private handleAuth(
     name: string,
     email: string,
+    userId: string,
     token: string,
     expiration: Date
   ) {
-    const user = new User(name, email, token, expiration);
+    const user = new User(name, email, userId, token, expiration);
     this.user.next(user);
     this.autoLogout(new Date(expiration).getTime());
     localStorage.setItem('userData', JSON.stringify(user));
@@ -32,6 +33,7 @@ export class AuthService {
         this.handleAuth(
           resData.name,
           resData.email,
+          resData.userId,
           resData.token,
           resData.expiration
         );
@@ -45,6 +47,7 @@ export class AuthService {
         this.handleAuth(
           resData.name,
           resData.email,
+          resData.userId,
           resData.token,
           resData.expiration
         );
@@ -69,6 +72,7 @@ export class AuthService {
     const userData: {
       name: string;
       email: string;
+      userId: string;
       _token: string;
       _tokenExpirationDate: Date;
     } = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -79,6 +83,7 @@ export class AuthService {
     const loadedUser = new User(
       userData.name,
       userData.email,
+      userData.userId,
       userData._token,
       userData._tokenExpirationDate
     );
