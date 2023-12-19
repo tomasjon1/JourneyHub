@@ -54,7 +54,8 @@ namespace JourneyHub.Api.Controllers
 
         [HttpGet("user-trips")]
         [Authorize]
-        public async Task<IActionResult> GetUserTripsAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetUserTripsAsync([FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

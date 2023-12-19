@@ -42,9 +42,12 @@ namespace JourneyHub.Api.Controllers
                 throw new BadRequestException(ErrorMessages.Invalid_Password);
 
             var (token, expiration) = GenerateJwtToken(existingUser);
-            return Ok(new { Token = token, Expiration = expiration,
-                            Email = existingUser.Email, Name = existingUser.UserName, 
-                            UserId = existingUser.Id});
+            return Ok(new
+            {
+                Token = token, Expiration = expiration,
+                Email = existingUser.Email, Name = existingUser.UserName,
+                UserId = existingUser.Id
+            });
         }
 
         [HttpPost]
@@ -77,9 +80,12 @@ namespace JourneyHub.Api.Controllers
                 throw new BadRequestException(string.Join("; ", isCreated.Errors.Select(e => e.Description)));
 
             var (token, expiration) = GenerateJwtToken(newUser);
-            return Ok(new { Token = token, Expiration = expiration,
-                            Email = newUser.Email, Name = requestDto.Name, 
-                            UserId = newUser.Id, });
+            return Ok(new
+            {
+                Token = token, Expiration = expiration,
+                Email = newUser.Email, Name = requestDto.Name,
+                UserId = newUser.Id,
+            });
         }
 
         private (string Token, DateTime Expiration) GenerateJwtToken(IdentityUser user)
@@ -100,7 +106,8 @@ namespace JourneyHub.Api.Controllers
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = expiration,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
@@ -108,6 +115,5 @@ namespace JourneyHub.Api.Controllers
 
             return (Token: tokenString, Expiration: expiration);
         }
-
     }
 }

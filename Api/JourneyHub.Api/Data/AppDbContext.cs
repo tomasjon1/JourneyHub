@@ -9,7 +9,9 @@ namespace JourneyHub.Data
         public DbSet<Trip>? Trips { get; set; }
         public DbSet<TripRating>? TripRatings { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

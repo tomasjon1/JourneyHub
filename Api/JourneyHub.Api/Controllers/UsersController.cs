@@ -46,22 +46,22 @@ namespace JourneyHub.Api.Controllers
             }));
         }
 
-            [HttpDelete]
-            public async Task<IActionResult> RemoveCurrentUser()
+        [HttpDelete]
+        public async Task<IActionResult> RemoveCurrentUser()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Optional: Add additional authorization checks here if needed
+
+            var result = await _userService.DeleteCurrentUserAsync(currentUserId);
+
+            if (!result)
             {
-                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                // Optional: Add additional authorization checks here if needed
-
-                var result = await _userService.DeleteCurrentUserAsync(currentUserId);
-
-                if (!result)
-                {
-                    return NotFound("User not found or could not be deleted.");
-                }
-
-                return Ok("User successfully deleted.");
+                return NotFound("User not found or could not be deleted.");
             }
+
+            return Ok("User successfully deleted.");
+        }
 
 
         [HttpPut]
@@ -81,20 +81,19 @@ namespace JourneyHub.Api.Controllers
         }
 
 
- [HttpPost("verify-password")]
-public async Task<IActionResult> VerifyPassword([FromBody] PasswordVerificationRequestDto passwordDto)
-{
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    if (string.IsNullOrEmpty(userId))
-    {
-        return BadRequest("User ID is missing or invalid.");
-    }
+        [HttpPost("verify-password")]
+        public async Task<IActionResult> VerifyPassword([FromBody] PasswordVerificationRequestDto passwordDto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID is missing or invalid.");
+            }
 
-    var isPasswordCorrect = await _userService.VerifyUserPasswordAsync(userId, passwordDto.Password);
+            var isPasswordCorrect = await _userService.VerifyUserPasswordAsync(userId, passwordDto.Password);
 
-    // Return the boolean value directly
-    return Ok(isPasswordCorrect);
-}
-
+            // Return the boolean value directly
+            return Ok(isPasswordCorrect);
+        }
     }
 }

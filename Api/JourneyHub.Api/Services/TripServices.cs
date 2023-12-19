@@ -23,41 +23,42 @@ namespace JourneyHub.Api.Services
             _mapper = mapper;
         }
 
-    public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
-    {
-        Trip trip = _mapper.Map<Trip>(tripDto);
-        trip.UserId = userId;
-        trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
+        public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
+        {
+            Trip trip = _mapper.Map<Trip>(tripDto);
+            trip.UserId = userId;
+            trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
 
-        _context.Trips.Add(trip);
-        await _context.SaveChangesAsync();
+            _context.Trips.Add(trip);
+            await _context.SaveChangesAsync();
 
-        return trip;
-    }
+            return trip;
+        }
 
 
-    public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsByUserIdAsync(string userId, int pageNumber, int pageSize)
-    {
-        var query = _context.Trips.Where(t => t.UserId == userId);
+        public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsByUserIdAsync(string userId, int pageNumber,
+            int pageSize)
+        {
+            var query = _context.Trips.Where(t => t.UserId == userId);
 
-        var totalTrips = await query.CountAsync();
-        var trips = await query.Skip((pageNumber - 1) * pageSize)
-                               .Take(pageSize)
-                               .AsNoTracking()
-                                .Select(trip => new GetTripsResponseDto
-                                {
-                                    Id = trip.Id,
-                                    RouteName = trip.RouteName,
-                                    RouteDescription = trip.RouteDescription,
-                                    Area = trip.Area,
-                                    Distance = trip.Distance,
-                                    Duration = trip.Duration,
-                                    Images = trip.Images,
-                                })
-                               .ToListAsync();
+            var totalTrips = await query.CountAsync();
+            var trips = await query.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .Select(trip => new GetTripsResponseDto
+                {
+                    Id = trip.Id,
+                    RouteName = trip.RouteName,
+                    RouteDescription = trip.RouteDescription,
+                    Area = trip.Area,
+                    Distance = trip.Distance,
+                    Duration = trip.Duration,
+                    Images = trip.Images,
+                })
+                .ToListAsync();
 
-        return (trips, totalTrips);
-    }
+            return (trips, totalTrips);
+        }
 
         public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsPagedAsync(int pageNumber, int pageSize)
         {
@@ -65,19 +66,19 @@ namespace JourneyHub.Api.Services
 
             var totalTrips = await query.CountAsync();
             var trips = await query.Skip((pageNumber - 1) * pageSize)
-                                .Take(pageSize)
-                                .AsNoTracking()
-                                .Select(trip => new GetTripsResponseDto
-                                {
-                                    Id = trip.Id,
-                                    RouteName = trip.RouteName,
-                                    RouteDescription = trip.RouteDescription,
-                                    Area = trip.Area,
-                                    Distance = trip.Distance,
-                                    Duration = trip.Duration,
-                                    Images = trip.Images,
-                                })
-                                .ToListAsync();
+                .Take(pageSize)
+                .AsNoTracking()
+                .Select(trip => new GetTripsResponseDto
+                {
+                    Id = trip.Id,
+                    RouteName = trip.RouteName,
+                    RouteDescription = trip.RouteDescription,
+                    Area = trip.Area,
+                    Distance = trip.Distance,
+                    Duration = trip.Duration,
+                    Images = trip.Images,
+                })
+                .ToListAsync();
             return (trips, totalTrips);
         }
 
@@ -109,7 +110,8 @@ namespace JourneyHub.Api.Services
 
         public async Task<AreaInfo> getAreaByCoordinatesAsync(MapPoint MapPoint)
         {
-            string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Lat.ToString() + "&lon=" + MapPoint.Lng.ToString() + "&format=json";
+            string _address = "https://nominatim.openstreetmap.org/reverse?lat=" + MapPoint.Lat.ToString() + "&lon=" +
+                              MapPoint.Lng.ToString() + "&format=json";
 
             var client = new HttpClient();
 
@@ -123,7 +125,7 @@ namespace JourneyHub.Api.Services
             HttpResponseMessage response = await client.GetAsync(new Uri(_address));
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsStringAsync();
-            
+
             string patterncountry = @"""\bcountry\b"":""([^""]+)""";
             string patterncity = @"""\bcity\b"":""([^""]+)""";
 

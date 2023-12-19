@@ -19,8 +19,8 @@ namespace JourneyHub.Api.Services
         {
             return await _userManager.FindByIdAsync(userId);
         }
-        
-                public async Task<bool> DeleteCurrentUserAsync(string userId)
+
+        public async Task<bool> DeleteCurrentUserAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -31,40 +31,40 @@ namespace JourneyHub.Api.Services
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded;
         }
-public async Task<IdentityUser> UpdateUserAsync(IdentityUser user, UserUpdateRequestDto userUpdateDto)
-{
-    string emailPattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
 
-    // Update Email
-    if (!string.IsNullOrEmpty(userUpdateDto.Email))
-    {
-        if (!Regex.IsMatch(userUpdateDto.Email, emailPattern))
-            throw new BadRequestException("Invalid email format.");
+        public async Task<IdentityUser> UpdateUserAsync(IdentityUser user, UserUpdateRequestDto userUpdateDto)
+        {
+            string emailPattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
 
-        user.Email = userUpdateDto.Email;
-    }
+            // Update Email
+            if (!string.IsNullOrEmpty(userUpdateDto.Email))
+            {
+                if (!Regex.IsMatch(userUpdateDto.Email, emailPattern))
+                    throw new BadRequestException("Invalid email format.");
 
-    // Update Username
-    if (!string.IsNullOrEmpty(userUpdateDto.UserName))
-    {
-        var existingUserWithNewUsername = await _userManager.FindByNameAsync(userUpdateDto.UserName);
-        if (existingUserWithNewUsername != null && existingUserWithNewUsername.Id != user.Id)
-            throw new BadRequestException("Username already taken.");
+                user.Email = userUpdateDto.Email;
+            }
 
-        user.UserName = userUpdateDto.UserName;
-    }
+            // Update Username
+            if (!string.IsNullOrEmpty(userUpdateDto.UserName))
+            {
+                var existingUserWithNewUsername = await _userManager.FindByNameAsync(userUpdateDto.UserName);
+                if (existingUserWithNewUsername != null && existingUserWithNewUsername.Id != user.Id)
+                    throw new BadRequestException("Username already taken.");
 
-    // Update user and return result
-    var updateResult = await _userManager.UpdateAsync(user);
-    if (!updateResult.Succeeded)
-        throw new BadRequestException(updateResult.Errors.FirstOrDefault()?.Description);
+                user.UserName = userUpdateDto.UserName;
+            }
 
-    return user;
-}
+            // Update user and return result
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+                throw new BadRequestException(updateResult.Errors.FirstOrDefault()?.Description);
+
+            return user;
+        }
 
 
-
-              public async Task<bool> VerifyUserPasswordAsync(string userId, string password)
+        public async Task<bool> VerifyUserPasswordAsync(string userId, string password)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -75,7 +75,4 @@ public async Task<IdentityUser> UpdateUserAsync(IdentityUser user, UserUpdateReq
             return await _userManager.CheckPasswordAsync(user, password);
         }
     }
-    }
-
-    
-
+}

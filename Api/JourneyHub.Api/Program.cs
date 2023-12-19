@@ -29,9 +29,9 @@ namespace JourneyHub
 
             builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
-            builder.Services.AddAuthentication(configureOptions:options =>
+            builder.Services.AddAuthentication(configureOptions: options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(jwt =>
@@ -65,8 +65,8 @@ namespace JourneyHub
             // Configure the HTTP request pipeline.
             // if (app.Environment.IsDevelopment())
             // {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+            app.UseSwagger();
+            app.UseSwaggerUI();
             // }
 
             app.UseExceptionHandler(c => c.Run(ExceptionHandlerMiddleware.InvokeAsync));

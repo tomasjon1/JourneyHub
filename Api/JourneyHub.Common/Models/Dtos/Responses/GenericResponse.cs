@@ -2,7 +2,9 @@
 {
     public class GenericResponse<T>
     {
-        public GenericResponse() { }
+        public GenericResponse()
+        {
+        }
 
         public GenericResponse(T data)
         {
@@ -17,6 +19,7 @@
         public ErrorResponseDto Error { get; set; }
         public T Data { get; set; }
     }
+
     public class ErrorResponseDto
     {
         public int StatusCode { get; set; }
