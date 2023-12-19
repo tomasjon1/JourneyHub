@@ -37,7 +37,7 @@ export class PlannerModalComponent {
   defaultState = {
     routeName: '',
     routeDescription: '',
-    routeVisibility: 'private',
+    isPrivate: true,
   };
 
   @HostListener('window:keydown.escape', ['$event'])
@@ -67,7 +67,7 @@ export class PlannerModalComponent {
         ],
       ],
       routeDescription: [this.defaultState.routeDescription],
-      visibility: [this.defaultState.routeVisibility, Validators.required],
+      isPrivate: [this.defaultState.isPrivate, Validators.required],
     });
   }
 

@@ -3,6 +3,7 @@ using JourneyHub.Api.Services.Interfaces;
 using JourneyHub.Common.Constants;
 using JourneyHub.Common.Models.Domain;
 using JourneyHub.Common.Models.Dtos.Requests;
+using JourneyHub.Common.Models.Dtos.Responses;
 using JourneyHub.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
@@ -35,32 +36,27 @@ namespace JourneyHub.Api.Services
             return trip;
         }
 
-        public async Task<(IEnumerable<Trip>, int)> GetTripsPagedAsync(int pageNumber, int pageSize)
+        public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsPagedAsync(int pageNumber, int pageSize)
         {
-            var totalTrips = await _context.Trips.CountAsync();
-            var trips = await _context.Trips
-                                    .Skip((pageNumber - 1) * pageSize)
-                                    .Take(pageSize)
-                                    .ToListAsync();
-            return (trips, totalTrips);
-        }
+            var query = _context.Trips.Where(trip => !trip.IsPrivate);
 
-        public async Task<IEnumerable<Trip>> GetAllTripsAsync()
-        {
-            return await _context.Trips
+            var totalTrips = await query.CountAsync();
+            var trips = await query.Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
                                 .AsNoTracking()
-                                .Select(trip => new Trip
+                                .Select(trip => new GetTripsResponseDto
                                 {
                                     Id = trip.Id,
                                     RouteName = trip.RouteName,
                                     RouteDescription = trip.RouteDescription,
-                                    Visibility = trip.Visibility,
+                                    Area = trip.Area,
                                     Distance = trip.Distance,
-                                    Duration = trip.Duration,
-                                    Area = trip.Area
+                                    Duration = trip.Duration
                                 })
                                 .ToListAsync();
+            return (trips, totalTrips);
         }
+
 
         public async Task<Trip> GetTripByIdAsync(int id)
         {
