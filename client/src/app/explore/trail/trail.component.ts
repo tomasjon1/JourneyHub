@@ -210,8 +210,8 @@ export class TrailComponent implements OnInit {
     iconSize: [20, 20],
   });
 
-  finishIcon = new Icon({
-    iconUrl: '../assets/mid-point-icon.svg',
+  endIcon = new Icon({
+    iconUrl: '../assets/end-point-icon.svg',
     iconSize: [20, 20],
   });
 
@@ -237,7 +237,7 @@ export class TrailComponent implements OnInit {
       trailPoints[trailPoints.length - 1].lat,
       trailPoints[trailPoints.length - 1].lng
     );
-    const finishMarker = new Marker(endPoint, { icon: this.finishIcon }).addTo(
+    const finishMarker = new Marker(endPoint, { icon: this.endIcon }).addTo(
       map
     );
   }

@@ -8,10 +8,25 @@
     (clearMapEvent)="clearAllPoints()"
   />
 
-  <div
-    class="rounded-md h-full md:h-full w-full !z-0 !cursor-crosshair"
-    leaflet
-    [leafletOptions]="mapOptions"
-    (leafletMapReady)="onMapReady($event)"
-  ></div>
+  <div class="relative w-full">
+    <div
+      class="flex gap-3 z-40 bg-white p-2 rounded-md absolute bottom-3 left-3 text-sm font-semibold"
+    >
+      <span class="flex items-center">
+        Start - <img src="../assets/starting-point-icon.svg" alt="" />
+      </span>
+      <span class="flex items-center">
+        Middle - <img src="../assets/mid-point-icon.svg" alt="" />
+      </span>
+      <span class="flex items-center">
+        End - <img src="../assets/end-point-icon.svg" alt="" />
+      </span>
+    </div>
+    <div
+      class="rounded-md h-full md:h-full w-full !z-0 !cursor-crosshair"
+      leaflet
+      [leafletOptions]="mapOptions"
+      (leafletMapReady)="onMapReady($event)"
+    ></div>
+  </div>
 </div>

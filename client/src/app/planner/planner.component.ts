@@ -118,8 +118,13 @@ export class PlannerComponent implements OnInit {
     iconSize: [20, 20],
   });
 
-  otherIcon = new Icon({
+  midIcon = new Icon({
     iconUrl: '../assets/mid-point-icon.svg',
+    iconSize: [20, 20],
+  });
+
+  endIcon = new Icon({
+    iconUrl: '../assets/end-point-icon.svg',
     iconSize: [20, 20],
   });
 
@@ -212,8 +217,7 @@ export class PlannerComponent implements OnInit {
     const newPoint = latLng(e.latlng.lat, e.latlng.lng);
     this.waypoints.push(newPoint);
 
-    let iconToUse =
-      this.waypoints.length === 1 ? this.startIcon : this.otherIcon;
+    let iconToUse = this.waypoints.length === 1 ? this.startIcon : this.endIcon;
 
     const newMarker = new Marker(newPoint, {
       icon: iconToUse,
@@ -278,6 +282,16 @@ export class PlannerComponent implements OnInit {
         this.markers[this.markers.length - 1].setLatLng(
           routeCoordinates[routeCoordinates.length - 1]
         );
+
+        this.markers.forEach((marker, index) => {
+          if (index === 0) {
+            marker.setIcon(this.startIcon); // First marker gets the start icon
+          } else if (index === this.markers.length - 1) {
+            marker.setIcon(this.endIcon); // Last marker gets the end icon
+          } else {
+            marker.setIcon(this.midIcon); // All other markers get the other icon
+          }
+        });
 
         this.routeLayer = polyline(routeCoordinates, {
           color: '#DB2B35',

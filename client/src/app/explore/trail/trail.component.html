@@ -92,12 +92,27 @@
     >
       Click here to close the map
     </span>
-    <div
-      class="rounded-md h-full w-full !z-30"
-      leaflet
-      [leafletOptions]="mapOptions"
-      (leafletMapReady)="onExpandedMapReady($event)"
-    ></div>
+    <div class="relative w-full h-full">
+      <div
+        class="flex gap-3 z-40 bg-white p-2 rounded-md absolute bottom-3 left-3 text-sm font-semibold"
+      >
+        <span class="flex items-center">
+          Start - <img src="../assets/starting-point-icon.svg" alt="" />
+        </span>
+        <span class="flex items-center">
+          Middle - <img src="../assets/mid-point-icon.svg" alt="" />
+        </span>
+        <span class="flex items-center">
+          End - <img src="../assets/end-point-icon.svg" alt="" />
+        </span>
+      </div>
+      <div
+        class="rounded-md h-full w-full !z-30"
+        leaflet
+        [leafletOptions]="mapOptions"
+        (leafletMapReady)="onExpandedMapReady($event)"
+      ></div>
+    </div>
   </div>
 
   <div
