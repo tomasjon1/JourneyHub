@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { LatLng, Marker, latLng } from 'leaflet';
 import { Observable } from 'rxjs';
@@ -49,6 +49,31 @@ export class PlannerService {
     };
 
     return this._http.post(`${this.apiUrl}/api/Trips`, form, httpOptions);
+  }
+
+  public getUserTrails(pageNumber: number = 1, pageSize: number = 10): any {
+    const userData: {
+      name: string;
+      email: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData') || '{}');
+
+    if (!userData || !userData._token) {
+      return;
+    }
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userData._token}`,
+      }),
+      params: new HttpParams()
+        .set('pageNumber', pageNumber.toString())
+        .set('pageSize', pageSize.toString()),
+    };
+
+    return this._http.get(`${this.apiUrl}/api/Trips/user-trips`, httpOptions);
   }
 
   public getTrails(

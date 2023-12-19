@@ -48,7 +48,19 @@ namespace JourneyHub.Api.Controllers
         public async Task<IActionResult> GetAllTripsAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var (trips, totalCount) = await _tripService.GetTripsPagedAsync(pageNumber, pageSize);
-            var response = new PagedResponse<IEnumerable<Trip>>(trips, pageNumber, pageSize, totalCount);
+            var response = new PagedResponse<IEnumerable<GetTripsResponseDto>>(trips, pageNumber, pageSize, totalCount);
+            return Ok(response);
+        }
+
+        [HttpGet("user-trips")]
+        [Authorize]
+        public async Task<IActionResult> GetUserTripsAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var (trips, totalCount) = await _tripService.GetTripsByUserIdAsync(userId, pageNumber, pageSize);
+
+            var response = new PagedResponse<IEnumerable<GetTripsResponseDto>>(trips, pageNumber, pageSize, totalCount);
             return Ok(response);
         }
 

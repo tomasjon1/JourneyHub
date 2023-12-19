@@ -36,6 +36,29 @@ namespace JourneyHub.Api.Services
             return trip;
         }
 
+
+    public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsByUserIdAsync(string userId, int pageNumber, int pageSize)
+    {
+        var query = _context.Trips.Where(t => t.UserId == userId);
+
+        var totalTrips = await query.CountAsync();
+        var trips = await query.Skip((pageNumber - 1) * pageSize)
+                               .Take(pageSize)
+                               .AsNoTracking()
+                                .Select(trip => new GetTripsResponseDto
+                                {
+                                    Id = trip.Id,
+                                    RouteName = trip.RouteName,
+                                    RouteDescription = trip.RouteDescription,
+                                    Area = trip.Area,
+                                    Distance = trip.Distance,
+                                    Duration = trip.Duration
+                                })
+                               .ToListAsync();
+
+        return (trips, totalTrips);
+    }
+
         public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsPagedAsync(int pageNumber, int pageSize)
         {
             var query = _context.Trips.Where(trip => !trip.IsPrivate);

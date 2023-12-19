@@ -10,6 +10,7 @@ export const APP_ROUTES: Routes = [
   { path: 'signup', component: RegisterComponent, title: 'Sign Up' },
   { path: 'signin', component: LoginComponent, title: 'Sign In' },
   { path: 'explore', component: ExploreComponent, title: 'Explore' },
+  { path: 'my-trails', component: ExploreComponent, title: 'My Trails' },
   { path: 'trail/:id', component: TrailComponent, title: 'Trail Details' },
   {
     path: 'trail-planner',

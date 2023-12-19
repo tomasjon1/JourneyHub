@@ -2,12 +2,10 @@
   <ng-container>
     <div class="flex flex-col gap-10">
       <div class="text-center flex flex-col gap-10">
-        <h1 class="text-4xl font-semibold">Find your next journey</h1>
-        <span class="text-xl"
-          >Discover the beauty of the great outdoors through the lenses of top
-          explorers Craving more wilderness? Delve into our extensive repository
-          of trails and find your next journey...</span
-        >
+        <h1 class="text-4xl font-semibold">
+          {{ pageDescription[mode].title }}
+        </h1>
+        <span class="text-xl">{{ pageDescription[mode].subtitle }}</span>
       </div>
       <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
         <app-trail-item
