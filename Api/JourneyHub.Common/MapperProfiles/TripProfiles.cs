@@ -14,7 +14,8 @@ namespace JourneyHub.Common.MapperProfiles
                 .ForMember(dest => dest.RouteDescription, opt => opt.MapFrom(src => src.RouteDescription))
                 .ForMember(dest => dest.IsPrivate, opt => opt.MapFrom(src => src.IsPrivate))
                 .ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
-                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration));
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images));
         }
     }
 }

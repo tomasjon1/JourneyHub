@@ -43,6 +43,24 @@
       </div>
     </div>
   </div>
+
+  <hr />
+  <div class="flex flex-col gap-3">
+    <h2 class="text-2xl font-semibold">Trail photos</h2>
+    <div class="grid grid-cols-2 gap-10">
+      <img
+        class="rounded-md h-72 w-full object-cover"
+        *ngFor="let image of trail.images"
+        src="{{ image }}"
+      />
+    </div>
+  </div>
+
+  <hr />
+  <div class="flex flex-col gap-3">
+    <h2 class="text-2xl font-semibold">What to expect</h2>
+    <p class="leading-9">{{ trail.routeDescription }}</p>
+  </div>
 </div>
 
 <div

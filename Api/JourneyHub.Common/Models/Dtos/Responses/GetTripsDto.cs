@@ -10,5 +10,6 @@ namespace JourneyHub.Common.Models.Dtos.Responses
         public double Distance { get; set; }
         public double Duration { get; set; }
         public AreaInfo Area { get; set; }
+        public string[] Images { get; set; } 
     }
 }

@@ -23,18 +23,21 @@ namespace JourneyHub.Api.Services
             _mapper = mapper;
         }
 
-        public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
-        {
-            Trip trip = _mapper.Map<Trip>(tripDto);
+public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
+{
+    Trip trip = _mapper.Map<Trip>(tripDto);
+    trip.UserId = userId;
+    trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
 
-            trip.UserId = userId;
+    // Image handling is already covered by AutoMapper
 
-            trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
-            _context.Trips.Add(trip);
-            await _context.SaveChangesAsync();
+    _context.Trips.Add(trip);
+    await _context.SaveChangesAsync();
 
-            return trip;
-        }
+    return trip;
+}
+
+
 
 
     public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsByUserIdAsync(string userId, int pageNumber, int pageSize)
@@ -52,7 +55,8 @@ namespace JourneyHub.Api.Services
                                     RouteDescription = trip.RouteDescription,
                                     Area = trip.Area,
                                     Distance = trip.Distance,
-                                    Duration = trip.Duration
+                                    Duration = trip.Duration,
+                                    Images = trip.Images
                                 })
                                .ToListAsync();
 
@@ -74,7 +78,8 @@ namespace JourneyHub.Api.Services
                                     RouteDescription = trip.RouteDescription,
                                     Area = trip.Area,
                                     Distance = trip.Distance,
-                                    Duration = trip.Duration
+                                    Duration = trip.Duration,
+                                    Images = trip.Images
                                 })
                                 .ToListAsync();
             return (trips, totalTrips);

@@ -19,6 +19,8 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "@asymmetrik/ngx-leaflet": "^17.0.0",
+    "@cloudinary/ng": "^2.0.0",
+    "@cloudinary/url-gen": "^1.14.0",
     "@types/leaflet-polylinedecorator": "^1.6.4",
     "angular": "^1.8.3",
     "file-saver": "^2.0.5",

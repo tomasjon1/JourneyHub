@@ -10,6 +10,7 @@ namespace JourneyHub.Common.Models.Dtos.Requests
         public List<MapPoint> MapMarkers {get; set; }
         public double Distance { get; set; }
         public double Duration { get; set; }
+        public string[] Images { get; set; } 
     }
     public class MapPoint
     {

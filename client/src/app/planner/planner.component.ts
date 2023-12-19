@@ -19,6 +19,7 @@ import { PlannerService } from './planner.service';
 import 'leaflet-polylinedecorator';
 import { PolylineDecorator } from 'leaflet';
 import { PlannerModalComponent } from './planner-options/planner-modal/planner-modal.component';
+import { MapService } from './map.service';
 
 @Component({
   standalone: true,
@@ -36,14 +37,17 @@ export class PlannerComponent implements OnInit {
   duration: number = 0;
   routeCoordinates: LatLng[] = [];
   isAddMode: boolean = true;
+  simpleMapScreenshoter!: SimpleMapScreenshoter;
 
   private arrowLayer: any;
 
   private _plannerService = inject(PlannerService);
   private cdRef = inject(ChangeDetectorRef);
+  private _mapService = inject(MapService);
 
   ngOnInit(): void {
     this.initializeMapOptions();
+    this.simpleMapScreenshoter = new SimpleMapScreenshoter().addTo(this.map);
   }
 
   toggleMode(isAddMode: boolean): void {
@@ -66,6 +70,7 @@ export class PlannerComponent implements OnInit {
   }
 
   onMapReady(map: Map): void {
+    this._mapService.setMap(map);
     this.map = map;
     this.map.on('click', this.onMapClick.bind(this));
     this.map.on('zoomend', () => this.updatePolylineDecorator());

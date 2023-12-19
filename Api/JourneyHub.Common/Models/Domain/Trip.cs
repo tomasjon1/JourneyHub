@@ -20,5 +20,6 @@ namespace JourneyHub.Common.Models.Domain
         public AreaInfo Area { get; set; }
         public double Distance { get; set; }
         public double Duration { get; set; }
+        public string[] Images { get; set; }
     }
 }
