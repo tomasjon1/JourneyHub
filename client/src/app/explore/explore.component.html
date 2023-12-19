@@ -1,5 +1,5 @@
 <div class="max-w-5xl m-auto mt-10">
-  <ng-container>
+  <ng-container *ngIf="!isLoading; else loading">
     <div class="flex flex-col gap-10">
       <div class="text-center flex flex-col gap-10">
         <h1 class="text-4xl font-semibold">
@@ -7,40 +7,46 @@
         </h1>
         <span class="text-xl">{{ pageDescription[mode].subtitle }}</span>
       </div>
-      <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
+      <div
+        *ngIf="trails.length > 0; else noTrails"
+        class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6"
+      >
         <app-trail-item
           *ngFor="let trailItem of trails"
           [trailItem]="trailItem"
         ></app-trail-item>
       </div>
     </div>
+    <ng-template #noTrails>
+      <div
+        class="bg-red-200 rounded-xl border-red-700 border-2 text-center text-lg font-semibold w-full p-3"
+      >
+        No trails found!
+      </div>
+    </ng-template>
 
     <div
-      *ngIf="!trails.length"
-      class="bg-red-200 rounded-xl border-red-700 border-2 text-center text-lg font-semibold w-full p-3"
+      *ngIf="trails.length < totalTrails"
+      class="flex justify-center mt-10 mb-10"
     >
-      No trails found!
+      <button
+        class="bg-light-500 text-dark-900 font-bold py-3 px-4 rounded"
+        (click)="loadTrails()"
+      >
+        Show More
+      </button>
     </div>
   </ng-container>
 
   <ng-template #loading>
     <div class="mb-6">
       <!-- <app-loader></app-loader> -->
-      loading
+      Loading...
     </div>
   </ng-template>
-
-  <div
-    *ngIf="!isLoading && trails.length < totalTrails"
-    class="flex justify-center"
-  >
-    <button
-      class="bg-light-500 text-dark-900 font-bold py-3 px-4 rounded mt-10"
-      (click)="loadTrails()"
-    >
-      Show More
-    </button>
-  </div>
 </div>
 
-<app-footer></app-footer>
+<!-- Footer outside the ng-container but controlled by isLoading -->
+<div *ngIf="!isLoading">
+  <app-footer></app-footer>
+</div>
