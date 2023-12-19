@@ -4,6 +4,10 @@
 >
   <div class="bg-slate-200 rounded-md h-48 w-full overflow-hidden">
     <img
+      (error)="
+        trailItem.images[0] =
+          'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg'
+      "
       [src]="trailItem.images[0]"
       alt="Trail Image"
       class="bg-slate-200 rounded-md h-48 w-full object-cover hover:scale-125 transition-all duration-200"
@@ -15,7 +19,7 @@
       <span *ngIf="trailItem.area.city">{{ trailItem.area.city }}, </span>
       {{ trailItem.area.country }}
     </h5>
-    <div class="flex gap-4 text-light-800 font-semibold">
+    <div class="flex gap-4 text-light-800 font-semibold text-xs">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-up-right-and-down-left-from-center fa-sm"></i>
         {{ trailItem.distance | distanceConverter }}

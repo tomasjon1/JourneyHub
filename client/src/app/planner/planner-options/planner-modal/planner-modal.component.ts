@@ -169,46 +169,38 @@ export class PlannerModalComponent {
       ...location,
     }));
 
-    this._mapService.takeScreenshot().subscribe({
-      next: (screenshotFile) => {
-        // const uploadScreenshotObservable =
-        //   this.uploadToCloudinary(screenshotFile);
-        const uploadObservables = this.selectedFiles.map((file, index) =>
-          this.uploadToCloudinary(file, `file-${index}-${file.name}`)
-        );
-        // uploadObservables.push(uploadScreenshotObservable);
+    // const uploadScreenshotObservable =
+    //   this.uploadToCloudinary(screenshotFile);
+    const uploadObservables = this.selectedFiles.map((file, index) =>
+      this.uploadToCloudinary(file, `file-${index}-${file.name}`)
+    );
+    // uploadObservables.push(uploadScreenshotObservable);
 
-        forkJoin(uploadObservables).subscribe({
-          next: (imageUrls) => {
-            const formData = {
-              ...this.saveRouteForm.value,
-              mapPoints: coordinates,
-              mapMarkers: markerCoords,
-              distance: this.distance,
-              duration: this.duration,
-              images: imageUrls,
-            };
+    forkJoin(uploadObservables).subscribe({
+      next: (imageUrls) => {
+        const formData = {
+          ...this.saveRouteForm.value,
+          mapPoints: coordinates,
+          mapMarkers: markerCoords,
+          distance: this.distance,
+          duration: this.duration,
+          images: imageUrls,
+        };
 
-            this._plannerService.saveTrail(formData).subscribe({
-              next: (response: any) => {
-                this._toastrService.success('Trail created successfully');
-                this._router.navigate(['/trail', response.data.id]);
-              },
-              error: (error: any) => {
-                console.error('Error saving trail:', error);
-                this._toastrService.error('Failed to save trail.');
-              },
-            });
+        this._plannerService.saveTrail(formData).subscribe({
+          next: (response: any) => {
+            this._toastrService.success('Trail created successfully');
+            this._router.navigate(['/trail', response.data.id]);
           },
-          error: (error) => {
-            console.error('Error during image upload:', error);
-            this._toastrService.error('Failed to upload images.');
+          error: (error: any) => {
+            console.error('Error saving trail:', error);
+            this._toastrService.error('Failed to save trail.');
           },
         });
       },
       error: (error) => {
-        console.error('Error taking screenshot:', error);
-        this._toastrService.error('Failed to take map screenshot.');
+        console.error('Error during image upload:', error);
+        this._toastrService.error('Failed to upload images.');
       },
     });
   }

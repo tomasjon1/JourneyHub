@@ -14,13 +14,13 @@
         ></app-trail-item>
       </div>
     </div>
-    <ng-template #noTrail>
-      <div
-        class="bg-red-200 rounded-xl border-red-700 border-2 text-center text-lg font-semibold w-full p-3"
-      >
-        No trails found!
-      </div>
-    </ng-template>
+
+    <div
+      *ngIf="!trails.length"
+      class="bg-red-200 rounded-xl border-red-700 border-2 text-center text-lg font-semibold w-full p-3"
+    >
+      No trails found!
+    </div>
   </ng-container>
 
   <ng-template #loading>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlannerService } from 'src/app/planner/planner.service';
 import { DistanceConverterPipe } from 'src/app/shared/pipes/distance-converter.pipe';
 import { DurationConverterPipe } from 'src/app/shared/pipes/duration-converter.pipe';
@@ -21,6 +21,7 @@ import {
 import 'leaflet-polylinedecorator';
 import { PolylineDecorator } from 'leaflet';
 import { FooterComponent } from 'src/app/footer/footer.component';
+import { ToastrService } from 'ngx-toastr';
 
 interface Location {
   order?: number;
@@ -54,6 +55,10 @@ export class TrailComponent implements OnInit {
   public mapHovered = false;
   mapInitialized = false;
   expandView = false;
+  showModal = false;
+
+  private _toastrService = inject(ToastrService);
+  private _router = inject(Router);
 
   toggleMapExpansion() {
     this.expandView = !this.expandView;
@@ -89,6 +94,10 @@ export class TrailComponent implements OnInit {
     map.on('zoomend', () => this.updatePolylineDecorator(map));
   }
 
+  toggleConfirmation() {
+    this.showModal = !this.showModal;
+  }
+
   ngOnInit(): void {
     const trailId = this._route.snapshot.paramMap.get('id');
     // this.initializeMapOptions({ lng: 54.723079, lat: 25.2333521 });
@@ -103,7 +112,9 @@ export class TrailComponent implements OnInit {
             this.initializeMapOptions(midpoint, this.trail.mapPoints.length);
           }
         },
-        error: (error: any) => {},
+        error: (error: any) => {
+          this._router.navigate(['/explore']);
+        },
       });
   }
 
@@ -163,6 +174,29 @@ export class TrailComponent implements OnInit {
     }
   }
 
+  onConfirmRemove() {
+    this.onDeleteTrail();
+    this.showModal = false;
+  }
+
+  onCancelRemove() {
+    this.showModal = false;
+  }
+
+  onDeleteTrail() {
+    const trailId = this._route.snapshot.paramMap.get('id');
+    this._plannerService.deleteTrail(trailId).subscribe({
+      next: (response: any) => {
+        this._toastrService.success('Trail deleted successfully');
+        this._router.navigate(['/my-trails']);
+      },
+      error: (error: any) => {
+        console.error('Error saving trail:', error);
+        this._toastrService.error('Failed to delete trail');
+      },
+    });
+  }
+
   startIcon = new Icon({
     iconUrl: '../assets/starting-point-icon.svg',
     iconSize: [20, 20],
@@ -186,13 +220,11 @@ export class TrailComponent implements OnInit {
       opacity: 1,
     }).addTo(map);
 
-    // Create and add a marker for the start point
     const startPoint = new LatLng(trailPoints[0].lat, trailPoints[0].lng);
     const startMarker = new Marker(startPoint, { icon: this.startIcon }).addTo(
       map
     );
 
-    // Create and add a marker for the finish point
     const endPoint = new LatLng(
       trailPoints[trailPoints.length - 1].lat,
       trailPoints[trailPoints.length - 1].lng

@@ -23,21 +23,17 @@ namespace JourneyHub.Api.Services
             _mapper = mapper;
         }
 
-public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
-{
-    Trip trip = _mapper.Map<Trip>(tripDto);
-    trip.UserId = userId;
-    trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
+    public async Task<Trip> CreateTripAsync(PostTripRequestDto tripDto, string userId)
+    {
+        Trip trip = _mapper.Map<Trip>(tripDto);
+        trip.UserId = userId;
+        trip.Area = await getAreaByCoordinatesAsync(tripDto.MapPoints[0]);
 
-    // Image handling is already covered by AutoMapper
+        _context.Trips.Add(trip);
+        await _context.SaveChangesAsync();
 
-    _context.Trips.Add(trip);
-    await _context.SaveChangesAsync();
-
-    return trip;
-}
-
-
+        return trip;
+    }
 
 
     public async Task<(IEnumerable<GetTripsResponseDto>, int)> GetTripsByUserIdAsync(string userId, int pageNumber, int pageSize)

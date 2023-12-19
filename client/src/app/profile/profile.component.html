@@ -10,7 +10,7 @@
     <h2 class="font-semibold text-lg">Change Username of Email</h2>
 
     <app-input
-      [control]="profileForm.controls.name"
+      [control]="profileForm.controls.userName"
       inputId="name"
       inputType="text"
       label="Username"
@@ -22,6 +22,24 @@
       inputType="email"
       label="Email"
       [customErrorMessages]="loginValidationMessages.email"
+    />
+
+    <hr class="w-64" />
+
+    <h2 class="font-semibold text-lg">Change Password</h2>
+
+    <app-input
+      [control]="profileForm.controls.newPassword"
+      inputId="newPassword"
+      inputType="password"
+      label="New password"
+    />
+
+    <app-input
+      [control]="profileForm.controls.confirmNewPassword"
+      inputId="confirmPassword"
+      inputType="password"
+      label="Repeat new password"
     />
 
     <button
@@ -36,4 +54,66 @@
       I want to delete my account
     </button>
   </form>
+</div>
+
+<div
+  *ngIf="showModal"
+  (click)="toggleConfirmation()"
+  class="opacity-50 fixed inset-0 z-20 bg-black"
+></div>
+
+<div
+  tabindex="-1"
+  aria-hidden="true"
+  *ngIf="showModal"
+  class="overflow-y-auto overflow-x-hidden fixed z-50 justify-center items-center md:inset-0 max-w-md h-fit m-auto"
+>
+  <div class="relative p-4 w-full h-full">
+    <div class="relative bg-white rounded-lg shadow">
+      <div class="flex items-center justify-between p-4 border-b rounded-md">
+        <h3 class="text-xl font-semibold text-gray-900">
+          Confirm removal of a trail
+        </h3>
+        <button
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center transition-colors"
+          data-modal-hide="static-modal"
+          (click)="onCancelRemove()"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <div class="flex gap-3 p-4">
+        <button
+          type="button"
+          class="bg-red-600 hover:bg-opacity-80 transition w-full text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
+          (click)="onCancelRemove()"
+        >
+          Cancel
+        </button>
+
+        <button
+          (click)="onConfirmRemove()"
+          class="bg-dark-900 hover:bg-opacity-80 transition w-full text-white py-3 rounded-md font-semibold disabled:bg-opacity-80 disabled:cursor-not-allowed"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

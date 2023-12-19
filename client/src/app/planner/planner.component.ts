@@ -47,7 +47,6 @@ export class PlannerComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeMapOptions();
-    this.simpleMapScreenshoter = new SimpleMapScreenshoter().addTo(this.map);
   }
 
   toggleMode(isAddMode: boolean): void {

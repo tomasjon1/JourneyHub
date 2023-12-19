@@ -88,6 +88,28 @@ export class PlannerService {
     });
   }
 
+  public deleteTrail(id: any): any {
+    const userData: {
+      name: string;
+      email: string;
+      _token: string;
+      _tokenExpirationDate: Date;
+    } = JSON.parse(localStorage.getItem('userData') || '{}');
+
+    if (!userData) {
+      return;
+    }
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userData!._token}`,
+      }),
+    };
+
+    return this._http.delete(`${this.apiUrl}/api/Trips/${id}`, httpOptions);
+  }
+
   public getTrail(trailId: string): any {
     return this._http.get(`${this.apiUrl}/api/Trips/${trailId}`);
   }

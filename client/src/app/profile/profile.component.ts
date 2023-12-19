@@ -24,17 +24,29 @@ export class ProfileComponent implements OnInit {
   constructor() {
     this.profileForm = this._formBuilder.group({
       email: [this.defaultState.email, [Validators.required, Validators.email]],
-      name: [this.defaultState.name, [Validators.required]],
+      userName: [this.defaultState.userName, [Validators.required]],
+      newPassword: [this.defaultState.newPassword, [Validators.required]],
+      confirmNewPassword: [
+        this.defaultState.confirmNewPassword,
+        [Validators.required],
+      ],
     });
   }
 
   _profileService = inject(ProfileService);
   private _toastrService = inject(ToastrService);
   private _formBuilder = inject(NonNullableFormBuilder);
+  showModal = false;
+
+  toggleConfirmation() {
+    this.showModal = !this.showModal;
+  }
 
   defaultState = {
     email: '',
-    name: '',
+    userName: '',
+    newPassword: '',
+    confirmNewPassword: '',
   };
 
   userDetails: any;
@@ -45,7 +57,9 @@ export class ProfileComponent implements OnInit {
         this.userDetails = response.data;
         this.profileForm.patchValue({
           email: this.userDetails.email,
-          name: this.userDetails.userName, // if you have the password
+          userName: this.userDetails.userName,
+          newPassword: this.userDetails.newPassword,
+          confirmNewPassword: this.userDetails.confirmNewPassword,
         });
       },
       error: (error: any) => {},
