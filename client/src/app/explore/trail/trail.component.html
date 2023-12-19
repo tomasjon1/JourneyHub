@@ -22,7 +22,7 @@
       </button> -->
     </div>
   </div>
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-5">
     <h2 class="text-2xl font-semibold">Trail route</h2>
     <div class="w-full h-96 flex gap-5">
       <div class="w-full h-96 relative group">
@@ -65,9 +65,9 @@
   </div>
 
   <hr *ngIf="trail.images.length" />
-  <div class="flex flex-col gap-3" *ngIf="trail.images.length">
+  <div class="flex flex-col gap-5" *ngIf="trail.images.length">
     <h2 class="text-2xl font-semibold">Trail photos</h2>
-    <div class="grid grid-cols-2 gap-3">
+    <div class="grid grid-cols-2 gap-5">
       <img
         class="rounded-md h-72 w-full object-cover"
         *ngFor="let image of trail.images"
@@ -77,7 +77,7 @@
   </div>
 
   <hr *ngIf="trail.routeDescription" />
-  <div class="flex flex-col gap-3" *ngIf="trail.routeDescription">
+  <div class="flex flex-col gap-5" *ngIf="trail.routeDescription">
     <h2 class="text-2xl font-semibold">What to expect</h2>
     <p class="leading-9">{{ trail.routeDescription }}</p>
   </div>
