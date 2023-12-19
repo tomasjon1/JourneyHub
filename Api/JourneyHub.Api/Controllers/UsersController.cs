@@ -65,7 +65,6 @@ namespace JourneyHub.Api.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userService.GetUserByIdAsync(userId);
-
             var updatedUser = await _userService.UpdateUserAsync(user, updateUserDto);
 
             return Ok(new GenericResponse<GetUserInfoDto>(new GetUserInfoDto

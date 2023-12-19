@@ -3,6 +3,7 @@ using JourneyHub.Common.Exceptions;
 using JourneyHub.Common.Models.Dtos.Requests;
 using Microsoft.AspNetCore.Identity;
 using System.Text.RegularExpressions;
+using JourneyHub.Common.Constants;
 
 namespace JourneyHub.Api.Services
 {
@@ -39,13 +40,15 @@ namespace JourneyHub.Api.Services
         public async Task<IdentityUser> UpdateUserAsync(IdentityUser user, UserUpdateRequestDto userUpdateDto)
         {
             string emailPattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
-
+            var mustUpdateCredentials = false;
+            
             if (!string.IsNullOrEmpty(userUpdateDto.Email))
             {
                 if (!Regex.IsMatch(userUpdateDto.Email, emailPattern))
                     throw new BadRequestException("Invalid email format.");
 
                 user.Email = userUpdateDto.Email;
+                mustUpdateCredentials = true;
             }
 
             if (!string.IsNullOrEmpty(userUpdateDto.UserName))
@@ -55,11 +58,29 @@ namespace JourneyHub.Api.Services
                     throw new BadRequestException("Username already taken.");
 
                 user.UserName = userUpdateDto.UserName;
+                mustUpdateCredentials = true;
             }
 
-            var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-                throw new BadRequestException(updateResult.Errors.FirstOrDefault()?.Description);
+            if (mustUpdateCredentials)
+            {
+                var isUserUpdated = await _userManager.UpdateAsync(user);
+                if (!isUserUpdated.Succeeded)
+                    throw new BadRequestException(isUserUpdated.Errors.FirstOrDefault()?.Description);
+            }
+
+            if (!string.IsNullOrEmpty(userUpdateDto.NewPassword))
+            {
+                if (userUpdateDto.NewPassword != userUpdateDto.ConfirmNewPassword)
+                {
+                    throw new BadRequestException(ErrorMessages.Passwords_Do_Not_Match);
+                }
+                
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var isPasswordUpdated = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.NewPassword);
+                
+                if (!isPasswordUpdated.Succeeded)
+                    throw new BadRequestException(isPasswordUpdated.Errors.FirstOrDefault()?.Description);
+            }
 
             return user;
         }
