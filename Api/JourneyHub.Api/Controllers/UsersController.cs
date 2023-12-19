@@ -23,15 +23,28 @@ namespace JourneyHub.Api.Controllers
         public async Task<IActionResult> GetUserDetails()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Check if userId is null
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID is missing or invalid.");
+            }
+
             var user = await _userService.GetUserByIdAsync(userId);
 
+            // Check if user is null
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
             return Ok(new GenericResponse<GetUserInfoDto>(new GetUserInfoDto
-                {
-                    UserName = user.UserName,
-                    Email = user.Email
-                }
-            ));
+            {
+                UserName = user.UserName,
+                Email = user.Email
+            }));
         }
+
 
         [HttpPut]
         public async Task<IActionResult> UpdateUserDetails([FromBody] UserUpdateRequestDto updateUserDto)
