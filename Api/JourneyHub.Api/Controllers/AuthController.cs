@@ -43,7 +43,8 @@ namespace JourneyHub.Api.Controllers
 
             var (token, expiration) = GenerateJwtToken(existingUser);
             return Ok(new { Token = token, Expiration = expiration,
-                            Email = existingUser.Email, Name = existingUser.UserName  });
+                            Email = existingUser.Email, Name = existingUser.UserName, 
+                            UserId = existingUser.Id});
         }
 
         [HttpPost]
@@ -67,7 +68,7 @@ namespace JourneyHub.Api.Controllers
             var newUser = new IdentityUser
             {
                 UserName = requestDto.Name,
-                Email = requestDto.Email
+                Email = requestDto.Email,
             };
 
             var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
@@ -77,7 +78,8 @@ namespace JourneyHub.Api.Controllers
 
             var (token, expiration) = GenerateJwtToken(newUser);
             return Ok(new { Token = token, Expiration = expiration,
-                            Email = newUser.Email, Name = requestDto.Name });
+                            Email = newUser.Email, Name = requestDto.Name, 
+                            UserId = newUser.Id, });
         }
 
         private (string Token, DateTime Expiration) GenerateJwtToken(IdentityUser user)

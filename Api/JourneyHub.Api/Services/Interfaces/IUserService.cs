@@ -7,5 +7,7 @@ namespace JourneyHub.Api.Services.Interfaces
     {
         Task<IdentityUser> GetUserByIdAsync(string userId);
         Task<IdentityUser> UpdateUserAsync(IdentityUser user, UserUpdateRequestDto userUpdateDto);
+        Task<bool> DeleteCurrentUserAsync(string userId);
+        Task<bool> VerifyUserPasswordAsync(string userId, string password);
     }
 }

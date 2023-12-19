@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { User } from '../shared/models/user.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class AuthService {
   apiUrl: string = 'http://localhost:5000';
 
   private readonly _http = inject(HttpClient);
+  private readonly _router = inject(Router);
 
   private handleAuth(
     name: string,
