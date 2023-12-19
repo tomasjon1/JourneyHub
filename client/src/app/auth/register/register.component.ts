@@ -66,7 +66,6 @@ export class RegisterComponent {
         ],
         password: [
           this.defaultState.password,
-
           [
             Validators.required,
             Validators.minLength(8),

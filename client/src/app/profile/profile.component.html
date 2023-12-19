@@ -1,10 +1,72 @@
 <div class="flex flex-col gap-10 items-center pt-12">
     <h1 class="text-2xl font-medium">Profile information</h1>
-    <!-- <form
+    <form
         [formGroup]="userProfileForm"
         (ngSubmit)="onSubmit()"
         class="max-w-sm w-full flex flex-col gap-8"
     >
-
-    </form> -->
+        <div class="flex items-center space-between">
+            <div class="w-1/4"> 
+                <p class="text-left">Username</p>
+            </div>
+            <div class="w-3/4">
+                <app-input
+                    [control]="userProfileForm.controls.username"
+                    inputId="username"
+                    inputType="username"
+                    [customErrorMessages]="userProfileValidationMessages.username"
+                />
+            </div>
+        </div>
+        <div class="flex items-center space-between">
+            <div class="w-1/4"> 
+                <p class="text-left">Email</p>
+            </div>
+            <div class="w-3/4">
+                <app-input
+                    [control]="userProfileForm.controls.email"
+                    inputId="email"
+                    inputType="email"
+                    [customErrorMessages]="userProfileValidationMessages.email"
+                />
+            </div>
+        </div>
+        <div class="flex items-center space-between">
+            <div class="w-1/4"> 
+                <p class="text-left">Password</p>
+            </div>
+            <div class="w-3/4">
+                <app-input
+                    [control]="userProfileForm.controls.password"
+                    inputId="password"
+                    inputType="password"
+                />
+            </div>
+        </div>
+        <div class="flex items-center space-between">
+            <div class="w-1/4"> 
+                <p class="text-left">New Password</p>
+            </div>
+            <div class="w-3/4">
+                <app-input
+                    [control]="userProfileForm.controls.newPassword"
+                    inputId="newPassword"
+                    inputType="newPassword"
+                />
+            </div>
+        </div>
+        <div class="flex items-center space-between">
+            <div class="w-1/4"> 
+                <p class="text-left">Confirm New Password</p>
+            </div>
+            <div class="w-3/4">
+                <app-input
+                    [control]="userProfileForm.controls.confirmNewPassword"
+                    inputId="newPassword"
+                    inputType="newPassword"
+                />
+            </div>
+        </div>
+    </form>
 </div>
+  
