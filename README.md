@@ -2,7 +2,7 @@
   <img width=300 src="./assets/Logo.svg" />
 </p>
 
-## What is it JourneyHub?
+## What is JourneyHub?
 
 **JourneyHub**: An open source trail planning application at your service. With the power of [OpenStreetMap](https://www.openstreetmap.org) and [OSRM](https://project-osrm.org/) engine, we simplify your trail planning, guiding you every step of the way.
 
